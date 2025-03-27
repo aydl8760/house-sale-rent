@@ -17,7 +17,7 @@ export default function CommonForm({
   formData,
   setFormData,
   onSubmit,
-
+  disabled,
   showGoogleAuth,
 }) {
   const renderInputByCommonType = (getItem) => {
@@ -31,7 +31,7 @@ export default function CommonForm({
             placeholder={getItem.placeholder}
             type={getItem.type}
             id={getItem.name}
-            className=" border-none focus:outline-none"
+            className=" border-none focus:outline-none p-6"
             value={value}
             onChange={(event) =>
               setFormData({
@@ -114,13 +114,14 @@ export default function CommonForm({
       {formControls.map((item) => (
         <div
           key={item.name}
-          className="bg-white rounded-lg border p-1 focus:outline-none"
+          className="bg-white rounded-lg border focus:outline-none"
         >
           {!showGoogleAuth && <Label className="mb-1">{item.label}</Label>}
           {renderInputByCommonType(item)}
         </div>
       ))}
       <Button
+        disabled={disabled}
         className="bg-green-600 text-white rounded-lg p-3 uppercase hover:bg-green-500 disabled:opacity-80"
         type="submit"
       >

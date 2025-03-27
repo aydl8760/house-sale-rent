@@ -8,7 +8,7 @@ export const signup = async (req, res, next) => {
     if (!userName || !email || !password) {
       return res.json({
         success: false,
-        message: "required",
+        message: "all the inputs are required",
       });
     }
 

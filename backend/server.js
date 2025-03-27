@@ -1,7 +1,9 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import userRouter from "./routes/user.js";
+import cors from "cors";
+
+import authRouter from "./routes/auth.js";
 
 dotenv.config();
 
@@ -15,10 +17,24 @@ mongoose
   });
 
 const app = express();
+app.use(
+  cors({
+    origin: "http://localhost:5174",
+    methods: ["GET", "POST", "DELETE", "PUT"],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "Cache-Control",
+      "Expires",
+      "Pragma",
+    ],
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 
-app.use("/api/user", userRouter);
+app.use("/api/auth", authRouter);
 
 app.listen(3050, () => {
   console.log("Server is running on Port 3050");
