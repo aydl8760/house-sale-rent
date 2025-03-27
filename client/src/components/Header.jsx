@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
-import { headerMenuItems } from "../../config";
+import { headerMenuItems } from "../config";
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import heroimg from "../assets/houseimg.jpeg";

@@ -42,3 +42,21 @@ export const signupFormControls = [
     type: "password",
   },
 ];
+
+export const loginFormControls = [
+  {
+    name: "email",
+    label: "Email",
+    type: "text",
+    componentType: "input",
+    placeholder: "Enter your email",
+  },
+
+  {
+    name: "password",
+    label: "Password",
+    placeholder: "Enter your password",
+    componentType: "input",
+    type: "password",
+  },
+];
