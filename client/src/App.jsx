@@ -4,6 +4,8 @@ import LogIn from "./pages/Auth/LogIn";
 import SignUp from "./pages/Auth/SignUp";
 import About from "./pages/About";
 import Header from "./components/Header";
+import Profile from "./pages/Profile";
+import AuthCheckRoutes from "./components/AuthCheckRoutes";
 
 function App() {
   return (
@@ -14,6 +16,9 @@ function App() {
         <Route path="/login" element={<LogIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/about" element={<About />} />
+        <Route element={<AuthCheckRoutes />}>
+          <Route path="/profile" element={<Profile />} />
+        </Route>
       </Routes>
     </>
   );
