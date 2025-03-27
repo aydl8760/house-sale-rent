@@ -17,7 +17,7 @@ export default function CommonForm({
   formData,
   setFormData,
   onSubmit,
-  disabled,
+
   showGoogleAuth,
 }) {
   const renderInputByCommonType = (getItem) => {
@@ -31,7 +31,7 @@ export default function CommonForm({
             placeholder={getItem.placeholder}
             type={getItem.type}
             id={getItem.name}
-            className="bg-transparent border-none bg-slate-100"
+            className=" border-none focus:outline-none"
             value={value}
             onChange={(event) =>
               setFormData({
@@ -53,7 +53,7 @@ export default function CommonForm({
             }
             value={value}
           >
-            <SelectTrigger className="w-full bg-transparent border-none bg-slate-100">
+            <SelectTrigger className="w-full bg-transparent border-none bg-white">
               <SelectValue placeholder={getItem.placeholder} />
             </SelectTrigger>
             <SelectContent>
@@ -112,14 +112,16 @@ export default function CommonForm({
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-4 mt-5">
       {formControls.map((item) => (
-        <div key={item.name} className="bg-slate-200 rounded-lg border p-1">
+        <div
+          key={item.name}
+          className="bg-white rounded-lg border p-1 focus:outline-none"
+        >
           {!showGoogleAuth && <Label className="mb-1">{item.label}</Label>}
           {renderInputByCommonType(item)}
         </div>
       ))}
       <Button
-        disabled={disabled}
-        className="bg-blue-500 text-white rounded-lg p-3 uppercase hover:bg-blue-600 disabled:opacity-80"
+        className="bg-green-600 text-white rounded-lg p-3 uppercase hover:bg-green-500 disabled:opacity-80"
         type="submit"
       >
         {buttonText || "Submit"}
