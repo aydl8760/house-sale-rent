@@ -12,7 +12,7 @@ const initialState = {
   password: "",
 };
 
-export default function Login() {
+export default function LogIn() {
   const [formData, setFormData] = useState(initialState);
   const { isLoading } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -55,7 +55,7 @@ export default function Login() {
         showGoogleAuth={true}
       />
       <div className="flex gap-2 mt-5">
-        <p>don't Have an Account?</p>
+        <p>Don't Have an Account?</p>
         <Link to="/signup">
           <span className="text-blue-700 hover:underline">Signup</span>
         </Link>

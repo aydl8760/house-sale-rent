@@ -91,3 +91,65 @@ export const login = async (req, res) => {
     });
   }
 };
+
+export const googleAuth = async (req, res, next) => {
+  const { email, userName, avator } = req.body;
+  try {
+    const users = await User.findOne({ email });
+    if (users) {
+      const token = jwt.sign(
+        {
+          id: users._id,
+        },
+        process.env.JWT_SECRET,
+        { expiresIn: process.env.JWT_EXPIRES }
+      );
+
+      console.log(users);
+      res.cookie("token", token, { httpOnly: true }).json({
+        success: true,
+        message: "succesfully created from google",
+        user: {
+          _id: users._id,
+          email: users.email,
+          userName: users.userName,
+          avator: users.avator,
+        },
+      });
+    } else {
+      const generatedPassword =
+        Math.random().toString(36).slice(-8) +
+        Math.random().toString(36).slice(-8);
+      const hashPassword = await bcrypt.hash(generatedPassword, 12);
+      const newUser = new User({
+        userName,
+        email,
+        password: hashPassword,
+        avator,
+      });
+      await newUser.save();
+      const token = jwt.sign(
+        {
+          id: newUser._id,
+        },
+        process.env.JWT_SECRET,
+        { expiresIn: process.env.JWT_EXPIRES }
+      );
+      res.cookie("token", token, { httpOnly: true }).json({
+        success: true,
+        message: "succesfully created from google",
+        user: {
+          id: newUser._id,
+          email: newUser.email,
+          userName: newUser.userName,
+          avator: newUser.avator,
+        },
+      });
+    }
+  } catch (error) {
+    res.json({
+      success: false,
+      message: "Ops something went wrong, please try again!",
+    });
+  }
+};

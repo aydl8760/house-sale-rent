@@ -10,6 +10,7 @@ import {
 } from "../ui/select";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
+import GoogleOAuth from "../Google-OAuth.jsx";
 
 export default function CommonForm({
   formControls,
@@ -127,6 +128,7 @@ export default function CommonForm({
       >
         {buttonText || "Submit"}
       </Button>
+      <GoogleOAuth />
     </form>
   );
 }
