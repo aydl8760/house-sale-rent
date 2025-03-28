@@ -94,7 +94,7 @@ export default function Header() {
                     <Link>
                       <DropdownMenuItem>
                         <TagIcon className="mr-2 w-4 h-4" />
-                        List-House
+                        Sale
                       </DropdownMenuItem>
                     </Link>
                     <Link>
