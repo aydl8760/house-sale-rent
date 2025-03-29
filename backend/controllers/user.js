@@ -1,4 +1,6 @@
+import bcryptjs from "bcryptjs";
 import { imageUploadUtil } from "../helpers/cloudinary.js";
+import User from "../models/user.js";
 
 export const handleImageUpload = async (req, res) => {
   try {
@@ -18,5 +20,40 @@ export const handleImageUpload = async (req, res) => {
       success: false,
       message: "Error occured during image upload",
     });
+  }
+};
+
+export const updateUser = async (req, res, next) => {
+  if (req.user.id !== req.params.id) {
+    return res.json({
+      success: false,
+      message: "You can only update your own Account",
+    });
+  }
+  try {
+    if (req.body.password) {
+      req.body.password = await bcryptjs.hash(req.body.password, 12);
+    }
+
+    const updateUser = await User.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: {
+          userName: req.body.userName,
+          password: req.body.password,
+          avator: req.body.avator,
+        },
+      },
+      { new: true }
+    );
+    const { password, ...user } = updateUser._doc;
+
+    res.status(200).json({
+      success: true,
+      message: "profile update successfully",
+      user,
+    });
+  } catch (error) {
+    next(error);
   }
 };
