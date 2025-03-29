@@ -1,5 +1,5 @@
 import express from "express";
-import { googleAuth, login, signup } from "../controllers/auth.js";
+import { googleAuth, login, logout, signup } from "../controllers/auth.js";
 import { authMiddleWare } from "../helpers/verifyUser.js";
 
 const router = express.Router();
@@ -7,6 +7,7 @@ const router = express.Router();
 router.post("/signup", signup);
 router.post("/login", login);
 router.post("/googleAuth", googleAuth);
+router.post("/logout", logout);
 router.get("/checkAuth", authMiddleWare, (req, res) => {
   const user = req.user;
   console.log(user);

@@ -6,7 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { signupFormControls } from "@/config";
-import { deleteUserAccount, updateUserProfile } from "../store/auth-slice";
+import {
+  deleteUserAccount,
+  logout,
+  updateUserProfile,
+} from "../store/auth-slice";
 import { useToast } from "@/hooks/use-toast";
 import DeleteDiaolg from "@/components/common/DeleteDialog";
 import { useNavigate } from "react-router-dom";
@@ -128,6 +132,22 @@ export default function Profile() {
       });
   };
 
+  const handleLogoutUser = () => {
+    dispatch(logout()).then((data) => {
+      if (data?.payload?.success) {
+        toast({
+          title: data?.payload?.message,
+          className: "bg-green-500",
+        });
+      } else {
+        toast({
+          title: data?.payload?.message,
+          variant: "destructive",
+        });
+      }
+    });
+  };
+
   console.log(formData);
 
   return (
@@ -202,7 +222,10 @@ export default function Profile() {
         </Button>
       </form>
       <div className="flex flex-col mt-4 border  w-[50%] p-3 gap-2">
-        <p className="text-slate-700 cursor-pointer font-medium flex items-center justify-between">
+        <p
+          onClick={handleLogoutUser}
+          className="text-slate-700 cursor-pointer font-medium flex items-center justify-between"
+        >
           <span className="flex items-center gap-2">
             <LogOut className="mr-2 w-4 h-4" /> Log out
           </span>

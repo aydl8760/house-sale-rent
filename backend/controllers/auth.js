@@ -154,3 +154,10 @@ export const googleAuth = async (req, res, next) => {
     });
   }
 };
+
+export const logout = async (req, res) => {
+  res.clearCookie("token").json({
+    success: true,
+    message: "Logout successfully",
+  });
+};

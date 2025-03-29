@@ -76,6 +76,17 @@ export const deleteUserAccount = createAsyncThunk(
   }
 );
 
+export const logout = createAsyncThunk("/auth/logout", async () => {
+  const response = await axios.post(
+    "http://localhost:3050/api/auth/logout",
+    {},
+    {
+      withCredentials: true,
+    }
+  );
+  return response.data;
+});
+
 /* export const checkAuth = createAsyncThunk("/auth/checkAuth", async () => {
   const response = await axios.get("http://localhost:3050/api/auth/checkAuth", {
     headers: {
@@ -158,6 +169,12 @@ const authSlice = createSlice({
         (state.isLoading = false),
           (state.isAuthenticated = false),
           (state.user = null);
+      })
+      .addCase(logout.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = null;
+        state.isAuthenticated = false;
+        console.log(state.user);
       });
   },
 });
