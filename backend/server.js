@@ -2,8 +2,10 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 import authRouter from "./routes/auth.js";
+import userRouter from "./routes/user.js";
 
 dotenv.config();
 
@@ -33,8 +35,10 @@ app.use(
 );
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.use("/api/auth", authRouter);
+app.use("/api/user", userRouter);
 
 app.listen(3050, () => {
   console.log("Server is running on Port 3050");
