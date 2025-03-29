@@ -45,6 +45,24 @@ export const googleAuth = createAsyncThunk(
   }
 );
 
+export const updateUserProfile = createAsyncThunk(
+  "/user/updateUserProfile",
+  async ({ id, formData }) => {
+    const result = await axios.post(
+      `http://localhost:3050/api/user/update/${id}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      }
+    );
+
+    return result?.data;
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -88,6 +106,19 @@ const authSlice = createSlice({
         console.log(state.user);
       })
       .addCase(googleAuth.rejected, (state) => {
+        (state.isLoading = false),
+          (state.isAuthenticated = false),
+          (state.user = null);
+      })
+      .addCase(updateUserProfile.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateUserProfile.fulfilled, (state, action) => {
+        (state.isLoading = false),
+          (state.isAuthenticated = action.payload.success);
+        state.user = action.payload.user;
+      })
+      .addCase(updateUserProfile.rejected, (state) => {
         (state.isLoading = false),
           (state.isAuthenticated = false),
           (state.user = null);

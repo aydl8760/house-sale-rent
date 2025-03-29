@@ -1,10 +1,13 @@
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { signupFormControls } from "@/config";
 import axios from "axios";
 import { ChevronRight, LogOut, Trash } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { signupFormControls } from "@/config";
+import { updateUserProfile } from "../store/auth-slice";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Profile() {
   const { user, isLoading } = useSelector((state) => state.auth);
@@ -12,6 +15,14 @@ export default function Profile() {
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
   const fileRef = useRef(null);
+  const dispatch = useDispatch();
+  const { toast } = useToast();
+
+  const reorderedFormProfileUpdate = signupFormControls.sort((a, b) => {
+    if (a.name === "email") return -1; // Ensure email comes first
+    if (b.name === "email") return 1;
+    return 0; // Maintain the original order for other controls
+  });
 
   function handleImageFile(event) {
     console.log(event.target.files);
@@ -55,13 +66,46 @@ export default function Profile() {
     }));
   };
 
+  const handleSubmitProfileUpdate = (e) => {
+    e.preventDefault();
+
+    const dataToSubmit = {
+      ...formData,
+      avator: formData.avator || user.avator,
+    };
+
+    console.log("Submitting Data:", dataToSubmit);
+
+    dispatch(updateUserProfile({ id: user._id, formData: dataToSubmit })).then(
+      (data) => {
+        console.log(data, "edit ");
+        if (data?.payload?.success) {
+          toast({
+            title: data?.payload?.message,
+            className: "bg-green-500",
+          });
+        } else {
+          toast({
+            title: data?.payload?.message,
+            variant: "destructive",
+          });
+        }
+      }
+    );
+  };
+
+  console.log(formData);
+
   return (
     <div className="p-3 max-w-lg mx-auto my-8">
       <h1 className="text-3xl font-semibold text-center my-4 ">
         Welcome to Your Profile
       </h1>
 
-      <form className="flex flex-col gap-4">
+      <form
+        onSubmit={handleSubmitProfileUpdate}
+        className="flex flex-col gap-4"
+      >
         <input
           type="file"
           ref={fileRef}
@@ -87,7 +131,7 @@ export default function Profile() {
             ) : (
               <Avatar
                 onClick={() => fileRef.current.click()}
-                className="w-28 h-28 mb-2 self-center p-3 cursor-pointer"
+                className=" h-20 w-20  object-cover cursor-pointer self-center"
               >
                 <AvatarFallback className="bg-green-600 text-white font-[600px] text-4xl">
                   {user.userName?.[0]?.toUpperCase()}
@@ -99,7 +143,7 @@ export default function Profile() {
           {loading && <span className="text-blue-500">Loading...</span>}
         </div>
 
-        {signupFormControls.map((control) => (
+        {reorderedFormProfileUpdate.map((control) => (
           <div key={control.name} className="">
             {control.componentType === "input" && (
               <input

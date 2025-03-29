@@ -19,6 +19,7 @@ mongoose
   });
 
 const app = express();
+const PORT = process.env.PORT || 3050;
 app.use(
   cors({
     origin: "http://localhost:5174",
@@ -40,8 +41,8 @@ app.use(cookieParser());
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 
-app.listen(3050, () => {
-  console.log("Server is running on Port 3050");
+app.listen(PORT, () => {
+  console.log(`Server is running on Port ${PORT}`);
 });
 
 app.use((err, req, res, next) => {
