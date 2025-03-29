@@ -6,17 +6,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { signupFormControls } from "@/config";
-import { updateUserProfile } from "../store/auth-slice";
+import { deleteUserAccount, updateUserProfile } from "../store/auth-slice";
 import { useToast } from "@/hooks/use-toast";
+import DeleteDiaolg from "@/components/common/DeleteDialog";
+import { useNavigate } from "react-router-dom";
 
 export default function Profile() {
   const { user, isLoading } = useSelector((state) => state.auth);
   const [imageFile, setImageFile] = useState(undefined);
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
+  const [openDiaolg, setOpenDialog] = useState(false);
+
   const fileRef = useRef(null);
   const dispatch = useDispatch();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const reorderedFormProfileUpdate = signupFormControls.sort((a, b) => {
     if (a.name === "email") return -1; // Ensure email comes first
@@ -92,6 +97,35 @@ export default function Profile() {
         }
       }
     );
+  };
+
+  const handleDelteUser = () => {
+    dispatch(deleteUserAccount(user._id))
+      .then((data) => {
+        console.log(data, "delete ");
+        if (data?.payload?.success) {
+          toast({
+            title: data?.payload?.message,
+            className: "bg-green-500",
+          });
+          setOpenDialog(false);
+          navigate("/");
+        } else {
+          toast({
+            title: data?.payload?.message,
+            variant: "destructive",
+          });
+          setOpenDialog(false);
+        }
+      })
+      .catch((error) => {
+        console.error("Error deleting user:", error);
+        toast({
+          title: "An error occurred while deleting the user.",
+          variant: "destructive",
+        });
+        setOpenDialog(false);
+      });
   };
 
   console.log(formData);
@@ -175,12 +209,21 @@ export default function Profile() {
           <ChevronRight className=" w-4 h-4 text-gray-500" />
         </p>
         <hr />
-        <p className=" cursor-pointer font-medium flex items-center justify-between">
+
+        <p
+          onClick={() => setOpenDialog(true)}
+          className=" cursor-pointer font-medium flex items-center justify-between"
+        >
           <span className="flex items-center gap-2 text-red-700">
             <Trash className="mr-2 w-4 h-4" /> Delete Account
           </span>
           <ChevronRight className=" w-4 h-4 text-gray-500" />
         </p>
+        <DeleteDiaolg
+          openDiaolg={openDiaolg}
+          onClose={() => setOpenDialog(false)}
+          onDelete={handleDelteUser}
+        />
       </div>
     </div>
   );

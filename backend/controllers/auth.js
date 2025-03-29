@@ -82,6 +82,7 @@ export const login = async (req, res) => {
         _id: createdEmail._id,
         email: createdEmail.email,
         userName: createdEmail.userName,
+        avator: createdEmail.avator,
       },
     });
   } catch (error) {

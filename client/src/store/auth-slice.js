@@ -63,6 +63,30 @@ export const updateUserProfile = createAsyncThunk(
   }
 );
 
+export const deleteUserAccount = createAsyncThunk(
+  "/user/deleteUserAccount",
+  async (id) => {
+    const result = await axios.delete(
+      `http://localhost:3050/api/user/delete/${id}`,
+      {
+        withCredentials: true,
+      }
+    );
+    return result?.data;
+  }
+);
+
+/* export const checkAuth = createAsyncThunk("/auth/checkAuth", async () => {
+  const response = await axios.get("http://localhost:3050/api/auth/checkAuth", {
+    headers: {
+      "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+    },
+    withCredentials: true,
+  });
+
+  return response.data;
+}); */
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -119,6 +143,18 @@ const authSlice = createSlice({
         state.user = action.payload.user;
       })
       .addCase(updateUserProfile.rejected, (state) => {
+        (state.isLoading = false),
+          (state.isAuthenticated = false),
+          (state.user = null);
+      })
+      .addCase(deleteUserAccount.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteUserAccount.fulfilled, (state, action) => {
+        (state.isLoading = false), (state.isAuthenticated = false);
+        state.user = null;
+      })
+      .addCase(deleteUserAccount.rejected, (state) => {
         (state.isLoading = false),
           (state.isAuthenticated = false),
           (state.user = null);
