@@ -1,6 +1,7 @@
 import bcryptjs from "bcryptjs";
 import { imageUploadUtil } from "../helpers/cloudinary.js";
 import User from "../models/user.js";
+import List from "../models/houseList.js";
 
 export const handleImageUpload = async (req, res) => {
   try {
@@ -74,6 +75,21 @@ export const deleteUser = async (req, res, next) => {
       success: true,
       message: "User Deleted successfully ",
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getListsByUserId = async (req, res, next) => {
+  if (req.user.id !== req.params.uid) {
+    return res.json({
+      success: false,
+      message: "You can only view your own listing",
+    });
+  }
+  try {
+    const userLists = await List.find({ creator: req.params.uid });
+    res.status(200).json(userLists);
   } catch (error) {
     next(error);
   }

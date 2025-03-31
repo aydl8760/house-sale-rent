@@ -15,6 +15,6 @@ router.post(
   handleMultipleImageUpload
 );
 
-router.post("/create", createList);
+router.post("/create", authMiddleWare, createList);
 
 export default router;

@@ -22,7 +22,9 @@ import { useToast } from "@/hooks/use-toast";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function CreateList() {
-  const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const { isAuthenticated, user, isLoading } = useSelector(
+    (state) => state.auth
+  );
   const [formData, setFormData] = useState({
     commonInfo: Object.fromEntries(
       commonFeaturesFormControls.map((control) => [
@@ -47,6 +49,7 @@ export default function CreateList() {
   const [imageFiles, setImageFiles] = useState([]);
   const [isImageUploadError, setIsImageUploadError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState();
   const [uploadedImages, setUploadedImages] = useState([]);
   const [step, setStep] = useState(1);
 
@@ -186,6 +189,11 @@ export default function CreateList() {
     if (!isAuthenticated) {
       navigate("/login");
       return;
+    }
+    if (
+      +formData.rentFeatures.regularPrice < +formData.rentFeatures.discountPrice
+    ) {
+      return setError("Discount price must be lower than regular price");
     }
     console.log(formData);
 
@@ -391,10 +399,12 @@ export default function CreateList() {
             </div>
             <div className="w-full flex justify-center items-center">
               <Button
-                disabled={loading || formData.imageUrls.length === 0}
+                disabled={
+                  isLoading || loading || formData.imageUrls.length === 0
+                }
                 className="bg-blue-600 w-[50%] uppercase text-white p-6 rounded-lg hover:bg-blue-700 disabled:opacity-85 "
               >
-                Create List
+                {isLoading ? "Creating..." : "Create List"}
               </Button>
             </div>
           </div>
