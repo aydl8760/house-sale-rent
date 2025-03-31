@@ -1,0 +1,390 @@
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { commonFeaturesFormControls, saleFeaturesFormControls } from "@/config";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import CheckboxDropdown from "@/components/common/CheckboxDropDown";
+import { ChevronDown } from "lucide-react";
+
+const initialFormData = {
+  title: "",
+  listingType: "",
+  proprtyType: "",
+  description: "",
+  regularPrice: 0,
+  offer: false,
+  location: "",
+  floarArea: "",
+  bathRoom: 1,
+  bedRoom: 1,
+  livingRoom: 1,
+  year: "",
+  furnished: "",
+  floorLevel: 0,
+  parking: "",
+  facilitiesAndAmenities: [],
+  securityFeatures: [],
+  loundryRoom: "",
+  smartHomeFeatures: [],
+  paymentMethodRent: "",
+  price: 0,
+  priceType: 0,
+  businessTypes: "",
+  imageUrls: [],
+  phone: "",
+  timeToContact: "",
+  discountPrice: 0,
+};
+
+export default function CreateList() {
+  const [formData, setFormData] = useState({
+    commonInfo: Object.fromEntries(
+      commonFeaturesFormControls.map((control) => [control.name, ""])
+    ),
+    saleFeatures: Object.fromEntries(
+      saleFeaturesFormControls.map((control) => [control.name, ""])
+    ),
+    imageUrls: [],
+  });
+  const [selectedColors, setSelectedColors] = useState([]);
+  const [showAdditionalForm, setShowAdditionalForm] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [step, setStep] = useState(1);
+
+  const handleFormChange = (name, value) => {
+    // If the field is one of the custom multi-select fields
+    if (["facilities", "security", "smart"].includes(name)) {
+      setSelectedColors(value);
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value, // Store as an array instead of a string
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
+  };
+
+  const totalSteps = 2; // Adjust this if you add more steps
+
+  // Function to validate required fields before moving forward
+  const isStepValid = () => {
+    if (step === 1) {
+      return commonFeaturesFormControls.every(
+        (control) => formData.commonInfo[control.name]
+      );
+    } else if (step === 2) {
+      return saleFeaturesFormControls.every(
+        (control) => formData.saleFeatures[control.name]
+      );
+    }
+    return true;
+  };
+
+  // Handles input changes for both steps
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [step === 1 ? "commonInfo" : "saleFeatures"]: {
+        ...prev[step === 1 ? "commonInfo" : "saleFeatures"],
+        [name]: value,
+      },
+    }));
+  };
+
+  const handlePrevSlide = () => {
+    setCurrentSlide(
+      (prevSlide) => (prevSlide - 1 + formControl.length) % formControl.length
+    );
+  };
+
+  console.log(currentSlide);
+
+  return (
+    <main className="p-3 max-w-6xl mx-auto mb-10">
+      <h1 className="text-3xl font-semibold text-center text-slate-800 my-7 ">
+        List Your house
+      </h1>
+      <form className="flex flex-col w-full gap-5">
+        <div className="text-2xl font-medium px-2">
+          {step === 1 ? "Common Information" : "Features for Sale Listing"}
+        </div>
+        <div className="flex flex-col gap-4 sm:grid sm:grid-cols-2 sm:gap-x-8 px-6 ">
+          {(step === 1
+            ? commonFeaturesFormControls
+            : saleFeaturesFormControls
+          ).map((control) => (
+            <div key={control.name}>
+              {control.componentType === "input" ? (
+                <Input
+                  id={control.name}
+                  name={control.name}
+                  type={control.type}
+                  placeholder={control.label}
+                  required
+                  className="border border-gray-300 rounded-lg p-6"
+                  value={
+                    formData[step === 1 ? "commonInfo" : "saleFeatures"][
+                      control.name
+                    ] || ""
+                  }
+                  onChange={handleChange}
+                />
+              ) : control.componentType === "select" ? (
+                <Select
+                  required
+                  onValueChange={(value) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      [step === 1 ? "commonInfo" : "saleFeatures"]: {
+                        ...prev[step === 1 ? "commonInfo" : "saleFeatures"],
+                        [control.name]: value,
+                      },
+                    }))
+                  }
+                  value={
+                    formData[step === 1 ? "commonInfo" : "saleFeatures"][
+                      control.name
+                    ] || ""
+                  }
+                >
+                  <SelectTrigger className="border border-gray-300 rounded-lg p-6">
+                    <SelectValue placeholder={control.label} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {control.options?.map((optionItem) => (
+                      <SelectItem key={optionItem.id} value={optionItem.id}>
+                        {optionItem.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              ) : null}
+            </div>
+          ))}
+        </div>
+
+        <div className="flex justify-between mt-6 px-6">
+          {step > 1 && (
+            <Button
+              type="button"
+              onClick={() => setStep((prev) => prev - 1)}
+              className="bg-gray-500 text-white px-6 py-3 rounded-lg"
+            >
+              Previous
+            </Button>
+          )}
+          {step < totalSteps ? (
+            <Button
+              type="button"
+              onClick={() => isStepValid() && setStep((prev) => prev + 1)}
+              disabled={isStepValid()}
+              className={`px-6 py-3 rounded-lg ${
+                isStepValid()
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              }`}
+            >
+              Next
+            </Button>
+          ) : (
+            <Button
+              type="submit"
+              className="bg-green-600 text-white px-6 py-3 rounded-lg"
+            >
+              Submit
+            </Button>
+          )}
+        </div>
+
+        <div className="flex flex-col gap-4 bg-gray-50">
+          <div
+            className={`flex items-center justify-between text-2xl font-medium cursor-pointer 
+              
+            }  p-2  group transition-all `}
+          >
+            <span>Features for Sale Listing</span>
+            <span className="flex items-center text-gray-400 justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 mr-4">
+              <ChevronDown size={19} />
+            </span>
+          </div>
+
+          <div className="flex flex-col gap-4 sm:grid sm:grid-cols-2 sm:gap-x-8 px-6 pb-4 ">
+            {saleFeaturesFormControls.map((control) => (
+              <div key={control.name}>
+                {control.componentType === "input" ? (
+                  <div>
+                    <Input
+                      id={control.name}
+                      name={control.name}
+                      type={control.type}
+                      placeholder={control.label}
+                      min={control.min}
+                      required
+                      className="border border-gray-300 rounded-lg p-6"
+                      value={formData[control.name] || ""}
+                      onChange={handleChange}
+                    />
+                  </div>
+                ) : (
+                  control.componentType === "select" && (
+                    <div>
+                      <Select
+                        required
+                        onValueChange={(value) =>
+                          setFormData({ ...formData, [control.name]: value })
+                        }
+                        value={formData[control.name] || ""}
+                        className=""
+                      >
+                        <SelectTrigger className="border border-gray-300 rounded-lg p-6 focus:outline-none placeholder-slate-200">
+                          <SelectValue placeholder={control.label} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {control.options?.length > 0
+                            ? control.options.map((optionItem) => (
+                                <SelectItem
+                                  key={optionItem.id}
+                                  value={optionItem.id}
+                                >
+                                  {optionItem.label}
+                                </SelectItem>
+                              ))
+                            : null}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  )
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex flex-col ">
+          <p className="font-semibold mb-2">
+            Images:
+            <span className="font-normal text-gray-600 ml-2">
+              The first image will be the cover (max 6)
+            </span>
+          </p>
+          <div className="flex gap-4">
+            <input
+              className="p-3 border bg-transparent border-slate-300 rounded w-full"
+              type="file"
+              id="images"
+              accept="image/*"
+              multiple
+            />
+            <Button
+              type="button"
+              className="p-7 font-normal bg-transparent text-blue-700 border border-blue-700 rounded uppercase hover:shadow-lg disabled:opacity-80"
+            >
+              Upload
+            </Button>
+          </div>
+
+          {formData.imageUrls.length > 0 &&
+            formData.imageUrls.map((imageUrl, index) => (
+              <div
+                key={imageUrl}
+                className="flex justify-between p-3 border items-center"
+              >
+                <img
+                  src={imageUrl}
+                  alt="car images"
+                  className="w-20 h-20 object-cover rounded-lg"
+                />
+                <Button
+                  type="button"
+                  className="p-3 bg-transparent text-red-700 rounded-lg uppercase hover:opacity-75"
+                >
+                  Delete
+                </Button>
+              </div>
+            ))}
+        </div>
+      </form>
+    </main>
+  );
+}
+
+
+{formControl.commonFeaturesFormControls.map((control) => (
+            <div key={control.name}>
+              {control.componentType === "input" ? (
+                <div>
+                  <Input
+                    id={control.name}
+                    name={control.name}
+                    type={control.type}
+                    placeholder={control.label}
+                    required
+                    className="border border-gray-300 rounded-lg p-6"
+                    value={formData[control.name] || ""}
+                    onChange={handleChange}
+                  />
+                </div>
+              ) : control.componentType === "select" ? (
+                <div>
+                  <Select
+                    required
+                    onValueChange={(value) =>
+                      setFormData({ ...formData, [control.name]: value })
+                    }
+                    value={formData[control.name] || ""}
+                    className=""
+                  >
+                    <SelectTrigger className="border border-gray-300 rounded-lg p-6 focus:outline-none placeholder-slate-200">
+                      <SelectValue placeholder={control.label} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {control.options?.length > 0
+                        ? control.options.map((optionItem) => (
+                            <SelectItem
+                              key={optionItem.id}
+                              value={optionItem.id}
+                            >
+                              {optionItem.label}
+                            </SelectItem>
+                          ))
+                        : null}
+                    </SelectContent>
+                  </Select>
+                </div>
+              ) : control.componentType === "textarea" ? (
+                <div>
+                  <Textarea
+                    name={control.name}
+                    placeholder={control.label}
+                    type={control.type}
+                    required
+                    id={control.name}
+                    className="rounded-lg"
+                    value={formData[control.name] || ""}
+                    onChange={handleChange}
+                  />
+                </div>
+              ) : (
+                control.componentType === "custom" && (
+                  <CheckboxDropdown
+                    options={control.options}
+                    name={control.label}
+                    // Already returns an array
+                    selectedValues={formData[control.name] || []}
+                    onChange={(value) => handleFormChange(control.name, value)}
+                  />
+                )
+              )}
+            </div>
+          ))}

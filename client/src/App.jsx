@@ -6,6 +6,8 @@ import About from "./pages/About";
 import Header from "./components/Header";
 import Profile from "./pages/Profile";
 import AuthCheckRoutes from "./components/AuthCheckRoutes";
+import CreateList from "./pages/HouseList/CreateList";
+import UserLists from "./pages/UserLists";
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route element={<AuthCheckRoutes />}>
           <Route path="/profile" element={<Profile />} />
+          <Route path="/createList" element={<CreateList />} />
+          <Route path="/userLists/:uid" element={<UserLists />} />
         </Route>
       </Routes>
     </>

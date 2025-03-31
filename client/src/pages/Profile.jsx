@@ -13,7 +13,7 @@ import {
 } from "../store/auth-slice";
 import { useToast } from "@/hooks/use-toast";
 import DeleteDiaolg from "@/components/common/DeleteDialog";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Profile() {
   const { user, isLoading } = useSelector((state) => state.auth);
@@ -221,6 +221,7 @@ export default function Profile() {
           {isLoading ? "Loading..." : "Update Profile"}
         </Button>
       </form>
+      <Link to={"/createList"}>Create Listing</Link>
       <div className="flex flex-col mt-4 border  w-[50%] p-3 gap-2">
         <p
           onClick={handleLogoutUser}
