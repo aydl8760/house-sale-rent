@@ -25,6 +25,20 @@ export const createList = createAsyncThunk(
   }
 );
 
+export const getListsByUserId = createAsyncThunk(
+  "/user/getListsByUserId",
+  async (id) => {
+    const response = await axios.get(
+      `http://localhost:3050/api/user/userLists/${id}`,
+      {
+        withCredentials: true, // Ensure cookies are sent
+      }
+    );
+
+    return response.data;
+  }
+);
+
 const listSlice = createSlice({
   name: "lists",
   initialState,
@@ -41,6 +55,18 @@ const listSlice = createSlice({
         state.list = action.payload.createdList;
       })
       .addCase(createList.rejected, (state, action) => {
+        state.isLoading = false;
+        state.list = [];
+      })
+      .addCase(getListsByUserId.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getListsByUserId.fulfilled, (state, action) => {
+        console.log(action.payload);
+        state.isLoading = false;
+        state.list = action.payload;
+      })
+      .addCase(getListsByUserId.rejected, (state, action) => {
         state.isLoading = false;
         state.list = [];
       });

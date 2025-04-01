@@ -300,7 +300,7 @@ export const saleFeaturesFormControls = [
 export const rentFeaturesFormControls = [
   {
     label: "Regular Price($/months)",
-    name: "regularPrice",
+    name: "price",
     componentType: "input",
     type: "number",
   },

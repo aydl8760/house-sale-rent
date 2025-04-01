@@ -60,7 +60,12 @@ export default function Header() {
 
           {isAuthenticated && user ? (
             <>
-              <Link className="hidden lg:inline-block">My List</Link>
+              <Link
+                to={`userLists/${user?._id}`}
+                className="hidden lg:inline-block"
+              >
+                My List
+              </Link>
               <div className="hidden lg:inline-flex">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
