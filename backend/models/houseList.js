@@ -26,6 +26,7 @@ const ListSchema = new Schema(
     },
     imageUrls: { type: Array, required: true },
     creator: { type: String, required: true },
+    active: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

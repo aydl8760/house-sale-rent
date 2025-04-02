@@ -81,13 +81,25 @@ export const deleteUser = async (req, res, next) => {
 };
 
 export const getListsByUserId = async (req, res, next) => {
-  if (req.user.id !== req.params.uid) {
-    return res.json({
-      success: false,
-      message: "You can only view your own listing",
-    });
-  }
   try {
+    // Check if the user is requesting their own listings
+    if (req.user.id !== req.params.uid) {
+      return res.status(403).json({
+        success: false,
+        message: "You can only view your own listing",
+      });
+    }
+
+    // Find the user and check if they are verified
+    const user = await User.findById(req.params.uid);
+    if (!user) {
+      return res.status(403).json({
+        success: false,
+        message: "User is not verified",
+      });
+    }
+
+    // Fetch lists for the verified user
     const userLists = await List.find({ creator: req.params.uid });
     res.status(200).json(userLists);
   } catch (error) {

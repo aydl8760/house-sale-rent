@@ -190,6 +190,19 @@ export default function CreateList() {
       navigate("/login");
       return;
     }
+    if (user.subscriptionType === "free" && user.verified === false) {
+      return toast({
+        title: "You need to verify your account to create more than 1 list.",
+        variant: "destructive",
+      });
+    }
+
+    if (user.postLimit <= user.createdLists) {
+      return toast({
+        title: "You have reached your limit for creating lists this month.",
+        variant: "destructive",
+      });
+    }
     if (
       +formData.rentFeatures.regularPrice < +formData.rentFeatures.discountPrice
     ) {
@@ -206,7 +219,7 @@ export default function CreateList() {
             title: data?.payload?.message,
             className: "bg-green-500",
           });
-          navigate(`/userLists/${user._id}`);
+          navigate(`/`);
         } else {
           console.log(data?.payload?.message);
           toast({

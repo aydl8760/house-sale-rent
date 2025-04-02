@@ -8,6 +8,7 @@ import Profile from "./pages/Profile";
 import AuthCheckRoutes from "./components/AuthCheckRoutes";
 import CreateList from "./pages/HouseList/CreateList";
 import UserLists from "./pages/UserLists";
+import AdminOrders from "./pages/AdminOrders";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/login" element={<LogIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/about" element={<About />} />
+        <Route path="/admin/order" element={<AdminOrders />} />
         <Route element={<AuthCheckRoutes />}>
           <Route path="/profile" element={<Profile />} />
           <Route path="/createList" element={<CreateList />} />
