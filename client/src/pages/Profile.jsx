@@ -17,6 +17,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 export default function Profile() {
   const { user, isLoading } = useSelector((state) => state.auth);
+  const { orderId } = useSelector((state) => state.order);
   const [imageFile, setImageFile] = useState(undefined);
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -221,7 +222,7 @@ export default function Profile() {
           {isLoading ? "Loading..." : "Update Profile"}
         </Button>
       </form>
-      <Link to={"/createList"}>Create Listing</Link>
+      <Link to={"/paymentOption"}>Create Listing</Link>
       <div className="flex flex-col mt-4 border  w-[50%] p-3 gap-2">
         <p
           onClick={handleLogoutUser}

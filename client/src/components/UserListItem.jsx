@@ -45,7 +45,7 @@ export default function UserListItem({ listItem }) {
       <CardFooter className="mt-3">
         {isUserCarsPage && user._id === listItem?.creator && (
           <div className="flex justify-between flex-1 ">
-            <Link to={`/updateCarListing/${listItem?._id}`}>
+            <Link to={`/updateList/${listItem?._id}`}>
               <Button className="bg-gray-800 hover:bg-green-700 w-[90px] uppercase">
                 Edit
               </Button>

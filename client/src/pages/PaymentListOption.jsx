@@ -1,14 +1,19 @@
 import React, { useState } from "react";
-import { Card, CardContent, CardFooter, CardTitle } from "./ui/card";
-import { Separator } from "./ui/separator";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardTitle,
+} from "../components/ui/card";
+import { Separator } from "../components/ui/separator";
 import { CheckIcon } from "lucide-react";
-import { Button } from "./ui/button";
+import { Button } from "../components/ui/button";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+
 import { useDispatch, useSelector } from "react-redux";
 import { createOrder } from "../store/order-slice";
 
-export default function PaymentCardSchedule({ userId }) {
+export default function PaymentListOption({ userId }) {
   const [paymentMethod, setPaymentMethod] = useState("");
   const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
@@ -38,7 +43,7 @@ export default function PaymentCardSchedule({ userId }) {
           <CardContent className="font-medium p-5 w-full text-gray-800 flex flex-col gap-3">
             <p className="text-lg">
               {plan === "free"
-                ? "2 Houses"
+                ? "1 Houses"
                 : plan === "starter"
                 ? "10 Houses"
                 : "25 Houses"}{" "}

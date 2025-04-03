@@ -105,7 +105,7 @@ export default function Header() {
                     <Link>
                       <DropdownMenuItem>
                         <TagIcon className="mr-2 w-4 h-4" />
-                        My List
+                        {user?.listCount} List
                       </DropdownMenuItem>
                     </Link>
                     <DropdownMenuSeparator />

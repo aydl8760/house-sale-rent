@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   commonFeaturesFormControls,
@@ -16,12 +16,16 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import CheckboxDropdown from "@/components/common/CheckboxDropDown";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { createList } from "../../store/listing-slice";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  createList,
+  getListById,
+  updateCreatedList,
+} from "../../store/listing-slice";
 import { useToast } from "@/hooks/use-toast";
 import { useDispatch, useSelector } from "react-redux";
 
-export default function CreateList() {
+export default function UpdateList() {
   const { isAuthenticated, user, isLoading } = useSelector(
     (state) => state.auth
   );
@@ -57,6 +61,7 @@ export default function CreateList() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const params = useParams();
 
   console.log(user);
   console.log(order.orderId);
@@ -75,8 +80,6 @@ export default function CreateList() {
 
       return updatedData;
     });
-
-    console.log("Updated formData:", formData);
   };
 
   const totalSteps = 3; // Adjust this if you add more steps
@@ -113,7 +116,7 @@ export default function CreateList() {
       const isStep1 = step === 1;
       const isRent = prev.commonInfo.listingType === "rent";
 
-      const updatedForm = {
+      return {
         ...prev,
         [isStep1 ? "commonInfo" : isRent ? "rentFeatures" : "saleFeatures"]: {
           ...prev[
@@ -122,13 +125,6 @@ export default function CreateList() {
           [name]: value,
         },
       };
-
-      // Reset saleFeatures if listingType is "rent"
-      if (name === "listingType" && value === "rent") {
-        updatedForm.saleFeatures = {};
-      }
-
-      return updatedForm;
     });
   };
 
@@ -188,46 +184,61 @@ export default function CreateList() {
     });
   };
 
+  useEffect(() => {
+    const listId = params.id;
+
+    dispatch(getListById(listId)).then((data) => {
+      if (data?.payload) {
+        setFormData((prev) => ({
+          ...prev,
+          commonInfo: {
+            ...data.payload.commonInfo,
+            listingType:
+              prev.commonInfo.listingType ||
+              data.payload.commonInfo.listingType, // Preserve existing type
+          },
+          rentFeatures: data.payload.rentFeatures || {},
+          saleFeatures: data.payload.saleFeatures || {},
+          imageUrls:
+            prev.imageUrls.length > 0 ? prev.imageUrls : data.payload.imageUrls, // Preserve images if already set
+        }));
+      } else {
+        toast({
+          title: "Error fetching listing",
+          variant: "destructive",
+        });
+      }
+    });
+  }, [dispatch, params.id]);
+
   const onSubmitHandler = (e) => {
     e.preventDefault();
     if (!isAuthenticated) {
       navigate("/login");
       return;
     }
-    if (user.subscriptionType === "free" && user.verified === false) {
-      return toast({
-        title: "You need to verify your account to create more than 1 list.",
-        variant: "destructive",
-      });
-    }
 
-    if (user.postLimit <= user.createdLists) {
-      return toast({
-        title: "You have reached your limit for creating lists this month.",
-        variant: "destructive",
-      });
-    }
     if (
       +formData.rentFeatures.regularPrice < +formData.rentFeatures.discountPrice
     ) {
       return setError("Discount price must be lower than regular price");
     }
-    console.log(formData);
 
     const cleanedData = { ...formData, creator: user._id };
     try {
-      dispatch(createList(cleanedData)).then((data) => {
+      dispatch(
+        updateCreatedList({
+          formData: { ...formData, creator: user._id },
+          id: params.id,
+        })
+      ).then((data) => {
         console.log(data);
         if (data?.payload?.success) {
           toast({
             title: data?.payload?.message,
             className: "bg-green-500",
           });
-          if (order?.paymentMethod === "free") {
-            navigate("/");
-          } else {
-            navigate(`/payment/${order.orderId}`);
-          }
+          navigate(`/userLists/${user._id}`);
         } else {
           console.log(data?.payload?.message);
           navigate("/paymentOption");
@@ -242,7 +253,9 @@ export default function CreateList() {
     }
   };
 
-  console.log(formData);
+  useEffect(() => {
+    console.log("Updated formData:", formData);
+  }, [formData]);
 
   return (
     <main className="p-3 max-w-7xl mx-auto mb-10">
@@ -321,6 +334,10 @@ export default function CreateList() {
                           : "saleFeatures"
                       ][control.name] || ""
                     }
+                    disabled={
+                      control.name === "listingType" &&
+                      formData.commonInfo.listingType
+                    }
                   >
                     <SelectTrigger className="border border-gray-300 rounded-lg p-6">
                       <SelectValue placeholder={control.label} />
@@ -386,8 +403,10 @@ export default function CreateList() {
                   accept="image/*"
                   multiple
                   onChange={handleImageFiles}
+                  disabled={formData.imageUrls.length > 0}
                 />
                 <Button
+                  disabled={formData.imageUrls.length > 0}
                   onClick={uploadImagesToCloudinary}
                   type="button"
                   className="p-7 font-normal bg-transparent text-blue-700 border border-blue-700 rounded uppercase hover:shadow-lg disabled:opacity-80"
@@ -409,13 +428,6 @@ export default function CreateList() {
                       alt="car images"
                       className="w-20 h-20 object-cover rounded-lg"
                     />
-                    <Button
-                      onClick={() => hanleDeleteImage(index)}
-                      type="button"
-                      className="p-3 bg-transparent text-red-700 rounded-lg uppercase hover:opacity-75"
-                    >
-                      Delete
-                    </Button>
                   </div>
                 ))}
             </div>
@@ -426,7 +438,7 @@ export default function CreateList() {
                 }
                 className="bg-blue-600 w-[50%] uppercase text-white p-6 rounded-lg hover:bg-blue-700 disabled:opacity-85 "
               >
-                {isLoading ? "Creating..." : "Create List"}
+                {isLoading ? "Updating..." : "Update Car"}
               </Button>
             </div>
           </div>

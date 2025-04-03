@@ -63,7 +63,7 @@ export const createList = async (req, res, next) => {
     // Count user's existing listings
     const userListCount = await List.countDocuments({ creator });
     if (userListCount >= user.postLimit) {
-      return res.status(403).json({
+      return res.json({
         success: false,
         message: "Post limit reached. Upgrade your plan to post more.",
       });
@@ -103,6 +103,57 @@ export const getAllLists = async (req, res, next) => {
     res.status(200).json({
       success: true,
       getAllList,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getListById = async (req, res, next) => {
+  try {
+    const list = await List.findById(req.params.id);
+    if (!list) {
+      return res.status(404).json({
+        success: false,
+        message: "Car not found",
+      });
+    }
+
+    console.log(list);
+
+    res.status(200).json(list);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateListById = async (req, res, next) => {
+  const list = await List.findById(req.params.id);
+
+  if (!list) {
+    return res.json({
+      success: false,
+      message: "Car not found",
+    });
+  }
+  console.log("req.user.id:", req.user.id);
+  console.log("req.params.uid:", req.params.uid);
+  if (req.user.id !== list.creator) {
+    return res.json({
+      success: false,
+      message: "You can only update your own listing",
+    });
+  }
+
+  try {
+    const updatedList = await List.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "updated Successfully",
+      updatedList,
     });
   } catch (error) {
     next(error);

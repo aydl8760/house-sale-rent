@@ -9,6 +9,9 @@ import AuthCheckRoutes from "./components/AuthCheckRoutes";
 import CreateList from "./pages/HouseList/CreateList";
 import UserLists from "./pages/UserLists";
 import AdminOrders from "./pages/AdminOrders";
+import PaymentListOption from "./pages/PaymentListOption";
+import PaymentSystem from "./pages/PaymentSystem";
+import UpdateList from "./pages/HouseList/UpdateList";
 
 function App() {
   return (
@@ -24,6 +27,9 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/createList" element={<CreateList />} />
           <Route path="/userLists/:uid" element={<UserLists />} />
+          <Route path="/updateList/:id" element={<UpdateList />} />
+          <Route path="/paymentOption" element={<PaymentListOption />} />
+          <Route path="/payment/:orderId" element={<PaymentSystem />} />
         </Route>
       </Routes>
     </>

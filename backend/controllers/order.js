@@ -1,3 +1,4 @@
+import List from "../models/houseList.js";
 import Order from "../models/order.js";
 import User from "../models/user.js";
 
@@ -34,7 +35,11 @@ export const createOrder = async (req, res, next) => {
       await List.updateMany({ creator: userId }, { active: true });
     }
 
-    res.json({ orderId: order._id });
+    res.json({
+      success: true,
+      orderId: order._id,
+      paymentMethod: order.paymentMethod,
+    });
   } catch (error) {
     console.log(error);
     next(error);
@@ -42,29 +47,3 @@ export const createOrder = async (req, res, next) => {
 };
 
 // Admin Verification
-export const verifyUserId = async (req, res) => {
-  const { userId } = req.params;
-  const user = await User.findById(userId);
-
-  if (!user) {
-    return res.status(404).json({ message: "User not found" });
-  }
-
-  // Verify based on payment method limits
-  const plans = {
-    free: 1,
-    starter: 10,
-    pro: 25,
-  };
-
-  if (user.subscriptionType === "free") {
-    user.verified = true;
-  } else {
-    user.verified = false;
-  }
-
-  user.postLimit = plans[user.subscriptionType];
-  await user.save();
-
-  res.json(user);
-};

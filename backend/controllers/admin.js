@@ -6,7 +6,6 @@ export const adminVerifyOrder = async (req, res) => {
   try {
     const { orderId } = req.params;
 
-    // Fetch the order
     const order = await Order.findById(orderId);
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
@@ -40,6 +39,8 @@ export const adminOrders = async (req, res) => {
       "userId",
       "userName email subscriptionType verified postLimit"
     );
+    const user = await User.findById(orders.userId);
+
     res.status(200).json(orders);
   } catch (error) {
     res.status(500).json({ message: error.message });

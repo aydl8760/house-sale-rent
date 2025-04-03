@@ -3,7 +3,7 @@ import axios from "axios";
 
 const initialState = {
   isLoading: false,
-  order: [],
+  orderId: null,
 };
 
 export const createOrder = createAsyncThunk(
@@ -34,11 +34,11 @@ const orderSlice = createSlice({
         console.log(action.payload);
 
         state.isLoading = false;
-        state.order = action.payload;
+        state.orderId = action.payload;
       })
       .addCase(createOrder.rejected, (state, action) => {
         state.isLoading = false;
-        state.order = [];
+        state.orderId = null;
       });
   },
 });
