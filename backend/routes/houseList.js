@@ -2,6 +2,7 @@ import express from "express";
 
 import {
   createList,
+  deleteListById,
   getAllLists,
   getListById,
   handleMultipleImageUpload,
@@ -22,5 +23,6 @@ router.post("/create", authMiddleWare, createList);
 router.get("/getList", getAllLists);
 router.get("/get-List/:id", getListById);
 router.put("/update/:id", authMiddleWare, updateListById);
+router.delete("/delete/:id", authMiddleWare, deleteListById);
 
 export default router;

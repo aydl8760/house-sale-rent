@@ -66,6 +66,19 @@ export const updateCreatedList = createAsyncThunk(
   }
 );
 
+export const deleteList = createAsyncThunk(
+  "/listing/deleteList",
+  async (id) => {
+    const result = await axios.delete(
+      `http://localhost:3050/api/listing/delete/${id}`,
+      {
+        withCredentials: true, // ✅ Allow cookies to be sent
+      }
+    );
+    return result?.data;
+  }
+);
+
 const listSlice = createSlice({
   name: "lists",
   initialState,
@@ -122,6 +135,15 @@ const listSlice = createSlice({
       .addCase(updateCreatedList.rejected, (state, action) => {
         state.isLoading = false;
         state.list = [];
+      })
+      .addCase(deleteList.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteList.fulfilled, (state, action) => {
+        (state.isLoading = false), (state.list = null);
+      })
+      .addCase(deleteList.rejected, (state) => {
+        (state.isLoading = false), (state.list = null);
       });
   },
 });

@@ -5,7 +5,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Button } from "./ui/button";
 
-export default function UserListItem({ listItem }) {
+export default function UserListItem({ listItem, handleDelteUserList }) {
   const { user } = useSelector((state) => state.auth);
   const location = useLocation();
   const navigate = useNavigate();
@@ -50,7 +50,10 @@ export default function UserListItem({ listItem }) {
                 Edit
               </Button>
             </Link>
-            <Button className="text-red-700 uppercase bg-inherit hover:bg-red-800 hover:text-white">
+            <Button
+              onClick={handleDelteUserList}
+              className="text-red-700 uppercase bg-inherit hover:bg-red-800 hover:text-white"
+            >
               Delete
             </Button>
           </div>

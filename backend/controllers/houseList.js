@@ -159,3 +159,36 @@ export const updateListById = async (req, res, next) => {
     next(error);
   }
 };
+
+export const deleteListById = async (req, res, next) => {
+  const listing = await List.findById(req.params.id);
+
+  if (!listing) {
+    return res.json({
+      success: false,
+      message: "listing not found",
+    });
+  }
+  if (req.user.id !== listing.creator) {
+    return res.json({
+      success: false,
+      message: "you can only delete your own listing",
+    });
+  }
+
+  try {
+    await List.findByIdAndDelete(req.params.id);
+
+    await User.findByIdAndUpdate(
+      listing.creator,
+      { $inc: { listCount: -1 } }, // Decrease listCount by 1
+      { new: true } // Optionally return the updated user document
+    );
+    res.status(200).json({
+      success: true,
+      message: "listing  deleted successffuly",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
