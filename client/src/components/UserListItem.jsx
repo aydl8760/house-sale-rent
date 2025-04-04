@@ -13,7 +13,10 @@ export default function UserListItem({ listItem, handleDelteUserList }) {
   const isUserCarsPage = location.pathname.includes("/userLists");
   return (
     <Card>
-      <div className="hover:cursor-pointer ">
+      <div
+        onClick={() => navigate(`/details/${listItem._id}`)}
+        className="hover:cursor-pointer "
+      >
         <div className="overflow-hidden">
           <img
             src={listItem?.imageUrls[0]}

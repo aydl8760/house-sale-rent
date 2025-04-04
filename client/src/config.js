@@ -13,7 +13,7 @@ export const headerMenuItems = [
   {
     id: "create",
     label: "Create",
-    path: "/create",
+    path: "/createList",
   },
 ];
 
@@ -99,12 +99,13 @@ export const commonFeaturesFormControls = [
   },
 
   {
-    label: "LoundryRoom",
-    name: "loundryRoom",
+    label: "Pricetype",
+    name: "priceType",
+    type: "number",
     componentType: "select",
     options: [
-      { id: "yes", label: "Yes" },
-      { id: "no", label: "No" },
+      { id: "FixedPrice", label: "Fixed-Price" },
+      { id: "Negotiable", label: "Negotiable" },
     ],
   },
 
@@ -113,11 +114,11 @@ export const commonFeaturesFormControls = [
     name: "propertyType",
     componentType: "select",
     options: [
-      { id: "apartment", label: "Apartment" },
-      { id: "house", label: "House" },
-      { id: "villa", label: "Villa" },
-      { id: "studio", label: "Studio" },
-      { id: "penthouse", label: "Penthouse" },
+      { id: "Apartment", label: "Apartment" },
+      { id: "House", label: "House" },
+      { id: "Villa", label: "Villa" },
+      { id: "Studio", label: "Studio" },
+      { id: "Penthouse", label: "Penthouse" },
     ],
   },
 
@@ -126,10 +127,10 @@ export const commonFeaturesFormControls = [
     name: "parking",
     componentType: "select",
     options: [
-      { id: "No", label: "No-Parking" },
-      { id: "one", label: "1-car" },
-      { id: "two", label: "2-car" },
-      { id: "three", label: "3+car" },
+      { id: "No-Parking", label: "No-Parking" },
+      { id: "1-car", label: "1-car" },
+      { id: "2-car", label: "2-car" },
+      { id: "3+car", label: "3+car" },
     ],
   },
 
@@ -155,9 +156,9 @@ export const commonFeaturesFormControls = [
     name: "furnished",
     componentType: "select",
     options: [
-      { id: "fully", label: "Fully-Furnished" },
-      { id: "semi", label: "Semi-Furnished," },
-      { id: "unfurnished", label: "Unfurnished" },
+      { id: "Furnished", label: "Fully-Furnished" },
+      { id: "Semi-Furnished", label: "Semi-Furnished," },
+      { id: "Unfurnished", label: "Unfurnished" },
     ],
   },
 
@@ -218,12 +219,7 @@ export const saleFeaturesFormControls = [
       { id: "renovated", label: "Renovated" },
     ],
   },
-  {
-    label: "Discount Price",
-    name: "discountPrice",
-    componentType: "input",
-    type: "number",
-  },
+
   {
     label: "Year",
     name: "year",
@@ -231,19 +227,10 @@ export const saleFeaturesFormControls = [
     options: yearOptions,
     type: "number",
   },
-  {
-    label: "Pricetype",
-    name: "priceType",
-    type: "number",
-    componentType: "select",
-    options: [
-      { id: "fixedPrice", label: "Fixed-Price" },
-      { id: "negotiable", label: "Negotiable" },
-    ],
-  },
+
   {
     label: "Area (sqm)",
-    name: "Floararea",
+    name: "area",
     componentType: "input",
     type: "text",
   },
@@ -278,9 +265,9 @@ export const saleFeaturesFormControls = [
     name: "timeToContact",
     componentType: "select",
     options: [
-      { id: "morning", label: "Morning" },
-      { id: "afternoon", label: "AfterNoon" },
-      { id: "anyTime", label: "Any-Time" },
+      { id: "Morning", label: "Morning" },
+      { id: "Afternoon", label: "AfterNoon" },
+      { id: "AnyTime", label: "Any-Time" },
     ],
   },
   {
@@ -317,12 +304,6 @@ export const rentFeaturesFormControls = [
   },
 
   {
-    label: "Discount Price",
-    name: "discountPrice",
-    componentType: "input",
-    type: "number",
-  },
-  {
     label: "Business-Types",
     name: "businessTypes",
     componentType: "select",
@@ -338,8 +319,8 @@ export const rentFeaturesFormControls = [
     type: "number",
     componentType: "select",
     options: [
-      { id: "fixedPrice", label: "Fixed-Price" },
-      { id: "negotiable", label: "Negotiable" },
+      { id: "FixedPrice", label: "Fixed-Price" },
+      { id: "Negotiable", label: "Negotiable" },
     ],
   },
   {
@@ -347,9 +328,9 @@ export const rentFeaturesFormControls = [
     name: "timeToContact",
     componentType: "select",
     options: [
-      { id: "morning", label: "Morning" },
-      { id: "afternoon", label: "AfterNoon" },
-      { id: "anyTime", label: "Any-Time" },
+      { id: "Morning", label: "Morning" },
+      { id: "Afternoon", label: "AfterNoon" },
+      { id: "AnyTime", label: "Any-Time" },
     ],
   },
   {

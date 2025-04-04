@@ -388,3 +388,17 @@ export default function CreateList() {
               )}
             </div>
           ))}
+
+
+          {
+  /* <tr>
+                    <td className="px-4 py-2 border border-gray-300 font-normal">
+                      Color
+                    </td>
+                    <td className="px-4 py-2 border border-gray-300 flex">
+                      {listCar.color.map((col) => (
+                        <p className="mr-2">{col}</p>
+                      ))}
+                    </td>
+                  </tr> */
+}

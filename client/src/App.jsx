@@ -12,6 +12,7 @@ import AdminOrders from "./pages/AdminOrders";
 import PaymentListOption from "./pages/PaymentListOption";
 import PaymentSystem from "./pages/PaymentSystem";
 import UpdateList from "./pages/HouseList/UpdateList";
+import DetailsOfList from "./pages/HouseList/DetailsList";
 
 function App() {
   const location = useLocation();
@@ -25,6 +26,7 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/about" element={<About />} />
         <Route path="/admin/order" element={<AdminOrders />} />
+        <Route path="/details/:id" element={<DetailsOfList />} />
         <Route element={<AuthCheckRoutes />}>
           <Route path="/profile" element={<Profile />} />
           <Route path="/createList" element={<CreateList />} />
