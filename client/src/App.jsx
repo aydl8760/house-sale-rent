@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import LogIn from "./pages/Auth/LogIn";
 import SignUp from "./pages/Auth/SignUp";
@@ -14,9 +14,11 @@ import PaymentSystem from "./pages/PaymentSystem";
 import UpdateList from "./pages/HouseList/UpdateList";
 
 function App() {
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
   return (
     <>
-      <Header />
+      {!isHomePage && <Header />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<LogIn />} />

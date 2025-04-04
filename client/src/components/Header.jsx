@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { headerMenuItems } from "../config";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "./ui/button";
 /* import heroimg from "../assets/houseimg.jpeg";
 import heroimg2 from "../assets/houseimg.jpeg"; */
@@ -17,52 +17,66 @@ import {
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import { LogOut, TagIcon, UserPen } from "lucide-react";
 
-function MenuItem() {
-  return (
-    <ul className="gap-5 lg:flex">
-      {headerMenuItems.map((menuItem) => (
-        <Link to={menuItem.path} key={menuItem.id}>
-          <li className="text-slate-800 hover:text-blue-700 hover:underline">
-            {menuItem.label}
-          </li>
-        </Link>
-      ))}
-    </ul>
-  );
-}
-
 export default function Header() {
   const { isAuthenticated, user } = useSelector((state) => state.auth);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
+
+  function MenuItem() {
+    return (
+      <ul className="gap-5 lg:flex ">
+        {headerMenuItems.map((menuItem) => (
+          <Link to={menuItem.path} key={menuItem.id}>
+            <li
+              className={`${
+                isHomePage ? "text-white" : "text-gray-900"
+              } hover:text-blue-700 hover:underline`}
+            >
+              {menuItem.label}
+            </li>
+          </Link>
+        ))}
+      </ul>
+    );
+  }
 
   return (
-    <header className="shadow-md">
-      <div className="max-w-7xl mx-auto p-2 flex items-center justify-between">
-        <h1 className="font-bold text-base sm:text-xl flex flex-wrap">
-          <span className="text-gray-500">Adnann</span>
-          <span className="text-gray-700">Estate</span>
+    <header className={`${!isHomePage && "shadow-md"} `}>
+      <div
+        className={`max-w-7xl mx-auto p-2 flex items-center justify-between  ${
+          isHomePage && "mt-6 px-4"
+        }`}
+      >
+        <h1 className="font-bold text-base sm:text-xl flex flex-wrap ">
+          <span className="text-green-400">Adnann</span>
+          <span className="text-gray-100">Estate</span>
         </h1>
 
-        <div className="hidden lg:block">
-          <MenuItem />
-        </div>
-
-        <div className="flex gap-3 items-center">
-          <form className="bg-white p-3 rounded-lg flex items-center">
+        {!isHomePage && (
+          <form className="bg-gray-100 p-3 rounded-lg flex items-center">
             <input
               placeholder="Search ....."
               name="keyword"
               type="text"
-              className="bg-transparent focus:outline-none w-52 sm:w-72"
+              className="bg-transparent focus:outline-none w-52 sm:w-96"
             />
             <FaSearch className="text-slate-700" />
           </form>
+        )}
+
+        <div className="flex gap-3 items-center">
+          <div className="hidden lg:block ">
+            <MenuItem />
+          </div>
 
           {isAuthenticated && user ? (
             <>
               <Link
                 to={`userLists/${user?._id}`}
-                className="hidden lg:inline-block"
+                className={`hidden lg:inline-block  ${
+                  isHomePage ? "text-white" : "text-gray-900"
+                }`}
               >
                 My List
               </Link>
@@ -77,7 +91,7 @@ export default function Header() {
                       />
                     ) : (
                       <Avatar className="">
-                        <AvatarFallback className="bg-green-700 text-white font-[600px]">
+                        <AvatarFallback className="bg-green-600 text-white font-[600px]">
                           {user?.userName?.[0]?.toUpperCase()}
                         </AvatarFallback>
                       </Avatar>
