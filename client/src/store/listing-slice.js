@@ -5,6 +5,7 @@ const initialState = {
   isLoading: false,
   error: false,
   list: [],
+  searchResult: [],
 };
 
 export const createList = createAsyncThunk(

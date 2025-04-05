@@ -192,3 +192,92 @@ export const deleteListById = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getListings = async (req, res, next) => {
+  try {
+    const {
+      listingType = [], // rent / sale
+      furnished = [], // furnished / unfurnished
+      propertyType = [], // apartment / villa / etc
+      condition = [], // new / used
+      year = [], // year built
+      description = "", // keyword search
+      searchTerm = "",
+      limit = 9,
+      startIndex = 0,
+      sortBy = "price-lowtohigh",
+    } = req.query;
+
+    let filters = {};
+
+    if (listingType.length) {
+      filters.type = { $in: listingType.split(",") };
+    }
+
+    if (furnished.length) {
+      filters["commonInfo.furnished"] = { $in: furnished.split(",") };
+    }
+
+    if (propertyType.length) {
+      filters["commonInfo.propertyType"] = { $in: propertyType.split(",") };
+    }
+
+    if (condition.length) {
+      filters["commonInfo.condition"] = { $in: condition.split(",") };
+    }
+
+    if (year.length) {
+      filters["commonInfo.year"] = { $in: year.split(",").map(Number) };
+    }
+
+    if (description) {
+      filters["commonInfo.description"] = {
+        $regex: description,
+        $options: "i", // case insensitive
+      };
+    }
+
+    if (searchTerm) {
+      filters.$or = [
+        { "commonInfo.title": { $regex: searchTerm, $options: "i" } },
+        { "commonInfo.description": { $regex: searchTerm, $options: "i" } },
+        { "commonInfo.location": { $regex: searchTerm, $options: "i" } },
+        { "commonInfo.listinType": { $regex: searchTerm, $options: "i" } },
+        { "saleFeatures.year": { $regex: searchTerm, $options: "i" } },
+        { "saleFeatures.condition": { $regex: searchTerm, $options: "i" } },
+      ];
+    }
+
+    let sort = {};
+
+    switch (sortBy) {
+      case "price-lowtohigh":
+        sort["commonInfo.price"] = 1;
+        break;
+      case "price-hightolow":
+        sort["commonInfo.price"] = -1;
+        break;
+      case "title-az":
+        sort["commonInfo.title"] = 1;
+        break;
+      case "title-za":
+        sort["commonInfo.title"] = -1;
+        break;
+      default:
+        sort["commonInfo.price"] = 1;
+        break;
+    }
+
+    const listings = await await List.find(filters)
+      .sort(sort)
+      .limit(limit)
+      .skip(startIndex);
+
+    res.status(200).json({
+      success: true,
+      listings,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
