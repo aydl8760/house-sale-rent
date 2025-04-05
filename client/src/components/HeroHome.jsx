@@ -1,6 +1,7 @@
 import React from "react";
 import { FaSearch } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import Search from "./Search";
 
 export default function HeroHome() {
   return (
@@ -12,17 +13,7 @@ export default function HeroHome() {
         </h1>
       </div>
       <div className="flex items-cente shadow-md">
-        <form className="bg-gray-50 p-3 rounded-l-lg w-full ">
-          <input
-            placeholder="Search ....."
-            name="keyword"
-            type="text"
-            className="bg-transparent focus:outline-none focus:bg-transparent w-52 sm:w-[30rem] "
-          />
-        </form>
-        <div className="bg-green-500 p-3 h-[50px] rounded-r-lg w-14 flex items-center justify-center ">
-          <FaSearch className="text-gray-700 text-lg" />
-        </div>
+        <Search />
       </div>
     </div>
   );

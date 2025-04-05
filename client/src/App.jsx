@@ -28,7 +28,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/admin/order" element={<AdminOrders />} />
         <Route path="/details/:id" element={<DetailsOfList />} />
-
+        <Route path="/allList" element={<AllLists />} />
         <Route element={<AuthCheckRoutes />}>
           <Route path="/profile" element={<Profile />} />
           <Route path="/createList" element={<CreateList />} />

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { headerMenuItems } from "../config";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 /* import heroimg from "../assets/houseimg.jpeg";
 import heroimg2 from "../assets/houseimg.jpeg"; */
@@ -16,12 +16,15 @@ import {
 } from "./ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import { LogOut, TagIcon, UserPen } from "lucide-react";
+import Search from "./Search";
 
 export default function Header() {
   const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const location = useLocation();
   const isHomePage = location.pathname === "/";
+  const navigate = useNavigate();
 
   console.log(user);
 
@@ -43,6 +46,22 @@ export default function Header() {
     );
   }
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.set("searchTerm", searchTerm);
+    const searchQuery = urlParams.toString();
+    navigate(`/allList/search?${searchQuery}`);
+  };
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const searchTermFromUrl = urlParams.get("searchTerm");
+    if (searchTermFromUrl) {
+      setSearchTerm(searchTermFromUrl);
+    }
+  }, [location.search]);
+
   return (
     <header className={`${!isHomePage && "shadow-md"} `}>
       <div
@@ -55,17 +74,7 @@ export default function Header() {
           <span className="text-gray-100">Estate</span>
         </h1>
 
-        {!isHomePage && (
-          <form className="bg-gray-100 p-3 rounded-lg flex items-center">
-            <input
-              placeholder="Search ....."
-              name="keyword"
-              type="text"
-              className="bg-transparent focus:outline-none w-52 sm:w-96"
-            />
-            <FaSearch className="text-slate-700" />
-          </form>
-        )}
+        {!isHomePage && <Search />}
 
         <div className="flex gap-3 items-center">
           <div className="hidden lg:block ">
