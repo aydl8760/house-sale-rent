@@ -12,7 +12,7 @@ export default function Search() {
     const urlParams = new URLSearchParams(window.location.search);
     urlParams.set("searchTerm", searchTerm);
     const searchQuery = urlParams.toString();
-    navigate(`/allList/search?${searchQuery}`);
+    navigate(`/listings/search?${searchQuery}`);
   };
 
   useEffect(() => {

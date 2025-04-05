@@ -346,3 +346,34 @@ export const rentFeaturesFormControls = [
     type: "text",
   },
 ];
+
+export const searchOptions = [
+  {
+    label: "Search by type....",
+    name: "listingType",
+    options: [
+      { id: "rent", label: "Rent" },
+      { id: "sale", label: "Sale" },
+    ],
+  },
+  {
+    label: "Property-Type",
+    name: "propertyType",
+    options: [
+      { id: "Apartment", label: "Apartment" },
+      { id: "House", label: "House" },
+      { id: "Villa", label: "Villa" },
+      { id: "Studio", label: "Studio" },
+      { id: "Penthouse", label: "Penthouse" },
+    ],
+  },
+  {
+    label: "Furnished-Status",
+    name: "furnished",
+    options: [
+      { id: "Furnished", label: "Fully-Furnished" },
+      { id: "Semi-Furnished", label: "Semi-Furnished," },
+      { id: "Unfurnished", label: "Unfurnished" },
+    ],
+  },
+];

@@ -13,7 +13,7 @@ import PaymentListOption from "./pages/PaymentListOption";
 import PaymentSystem from "./pages/PaymentSystem";
 import UpdateList from "./pages/HouseList/UpdateList";
 import DetailsOfList from "./pages/HouseList/DetailsList";
-import AllLists from "./pages/HouseList/AllLists";
+import Listings from "./pages/HouseList/Listings";
 
 function App() {
   const location = useLocation();
@@ -28,7 +28,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/admin/order" element={<AdminOrders />} />
         <Route path="/details/:id" element={<DetailsOfList />} />
-        <Route path="/allList" element={<AllLists />} />
+        <Route path="/listings/search" element={<Listings />} />
         <Route element={<AuthCheckRoutes />}>
           <Route path="/profile" element={<Profile />} />
           <Route path="/createList" element={<CreateList />} />

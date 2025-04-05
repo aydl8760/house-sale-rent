@@ -20,11 +20,8 @@ import Search from "./Search";
 
 export default function Header() {
   const { isAuthenticated, user } = useSelector((state) => state.auth);
-  const [searchTerm, setSearchTerm] = useState("");
-
   const location = useLocation();
   const isHomePage = location.pathname === "/";
-  const navigate = useNavigate();
 
   console.log(user);
 
@@ -45,22 +42,6 @@ export default function Header() {
       </ul>
     );
   }
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const urlParams = new URLSearchParams(window.location.search);
-    urlParams.set("searchTerm", searchTerm);
-    const searchQuery = urlParams.toString();
-    navigate(`/allList/search?${searchQuery}`);
-  };
-
-  useEffect(() => {
-    const urlParams = new URLSearchParams(location.search);
-    const searchTermFromUrl = urlParams.get("searchTerm");
-    if (searchTermFromUrl) {
-      setSearchTerm(searchTermFromUrl);
-    }
-  }, [location.search]);
 
   return (
     <header className={`${!isHomePage && "shadow-md"} `}>
