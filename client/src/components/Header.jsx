@@ -23,6 +23,8 @@ export default function Header() {
   const location = useLocation();
   const isHomePage = location.pathname === "/";
 
+  console.log(user);
+
   function MenuItem() {
     return (
       <ul className="gap-5 lg:flex ">

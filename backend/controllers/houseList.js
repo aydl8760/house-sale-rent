@@ -115,7 +115,7 @@ export const getListById = async (req, res, next) => {
     if (!list) {
       return res.status(404).json({
         success: false,
-        message: "Car not found",
+        message: "list not found",
       });
     }
 

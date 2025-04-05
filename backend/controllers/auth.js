@@ -140,7 +140,7 @@ export const googleAuth = async (req, res, next) => {
         success: true,
         message: "succesfully created from google",
         user: {
-          id: newUser._id,
+          _id: newUser._id,
           email: newUser.email,
           userName: newUser.userName,
           avator: newUser.avator,

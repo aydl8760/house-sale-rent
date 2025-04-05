@@ -8,17 +8,12 @@ import {
   FaBath,
   FaBed,
   FaChair,
-  FaEnvelope,
-  FaGoogle,
   FaMapMarkerAlt,
   FaParking,
-  FaPhone,
-  FaPhoneAlt,
-  FaPhoneSquare,
-  FaPhoneVolume,
 } from "react-icons/fa";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
+import Contact from "@/components/Contact";
 
 export default function DetailsOfList() {
   const { isLoading, error } = useSelector((state) => state.list);
@@ -125,9 +120,7 @@ export default function DetailsOfList() {
                   For {list?.type}
                 </p>
                 <p className="bg-green-900 w-full max-w-[200px] text-white text-center p-1 rounded-md">
-                  {list?.type === "rent"
-                    ? list?.rentFeatures?.priceType
-                    : list?.saleFeatures?.priceType}
+                  {list?.commonInfo?.priceType}
                 </p>
               </div>
 
@@ -281,6 +274,7 @@ export default function DetailsOfList() {
             </tbody>
           </table>
         </div>
+        {list?.creator !== user?._id && <Contact list={list} />}
       </div>
     </main>
   );

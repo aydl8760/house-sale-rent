@@ -30,6 +30,7 @@ export const getListsByUserId = createAsyncThunk(
   async (id) => {
     const response = await axios.get(
       `http://localhost:3050/api/user/userLists/${id}`,
+
       {
         withCredentials: true, // Ensure cookies are sent
       }
@@ -44,6 +45,16 @@ export const getListById = createAsyncThunk(
   async (id) => {
     const response = await axios.get(
       `http://localhost:3050/api/listing/get-List/${id}`
+    );
+    return response.data;
+  }
+);
+
+export const getAllLists = createAsyncThunk(
+  "/listing/getAllLists",
+  async () => {
+    const response = await axios.get(
+      "http://localhost:3050/api/listing/getList"
     );
     return response.data;
   }
@@ -123,6 +134,18 @@ const listSlice = createSlice({
         state.isLoading = false;
         state.list = [];
         state.error = true;
+      })
+      .addCase(getAllLists.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getAllLists.fulfilled, (state, action) => {
+        console.log(action.payload);
+        state.isLoading = false;
+        state.list = action.payload;
+      })
+      .addCase(getAllLists.rejected, (state, action) => {
+        state.isLoading = false;
+        state.list = [];
       })
       .addCase(updateCreatedList.pending, (state) => {
         state.isLoading = true;

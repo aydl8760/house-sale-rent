@@ -1,11 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import houseImg from "../assets/modern3.jpg";
 import houseImg2 from "../assets/houseimg2.jpeg";
 import houseImg3 from "../assets/houseimg.jpeg";
 import HeroHome from "../components/HeroHome";
+import { useDispatch } from "react-redux";
+import { getAllLists } from "../store/listing-slice";
+import UserListItem from "../components/UserListItem";
 
 export default function Home() {
+  const [listings, setListings] = useState(null);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getAllLists()).then((data) => {
+      console.log(data);
+      if (data.payload.success) {
+        setListings(data.payload.getAllList);
+      }
+    });
+  }, []);
+
+  console.log(listings);
+
   return (
     <div>
       <div
@@ -20,6 +36,11 @@ export default function Home() {
             <HeroHome />
           </section>
         </div>
+      </div>
+      <div className="grid grid-cols-4">
+        {listings?.map((listItem) => (
+          <UserListItem listItem={listItem} />
+        ))}
       </div>
     </div>
   );

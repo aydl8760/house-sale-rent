@@ -47,15 +47,15 @@ export default function UserList() {
       <div className="grid grid-cols-1 place-items-center sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
         {!isLoading &&
           userListing &&
-          userListing.length > 0 &&
-          userListing.map((listItem) => (
+          userListing?.length > 0 &&
+          userListing?.map((listItem) => (
             <UserListItem
               listItem={listItem}
-              key={listItem._id}
+              key={listItem?._id}
               handleDelteUserList={() => handleDelteUserList(listItem._id)}
             />
           ))}
-        {!isLoading && userListing.length === 0 && <p>No lists available.</p>}
+        {!isLoading && userListing?.length === 0 && <p>No lists available.</p>}
       </div>
     </div>
   );
