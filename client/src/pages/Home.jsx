@@ -23,18 +23,18 @@ export default function Home() {
   console.log(listings);
 
   return (
-    <div>
+    <div className="flex flex-col gap-8">
       <div
-        className="bg-cover  overflow-hidden h-full relative" // Ensure this div is relative
+        className="bg-cover overflow-hidden h-full relative" // Ensure this div is relative
         style={{ backgroundImage: `url(${houseImg})` }}
       >
         <div className="absolute inset-0 bg-gray-950 opacity-50"></div>
         {/* Ensure content appears above the overlay */}
         <div className="relative z-10">
           <Header />
-          <section className="h-[600px]">
+          <div className="h-[350px] lg:h-[600px]">
             <HeroHome />
-          </section>
+          </div>
         </div>
       </div>
       <div className="grid grid-cols-4">

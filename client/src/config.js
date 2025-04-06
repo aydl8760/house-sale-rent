@@ -349,7 +349,7 @@ export const rentFeaturesFormControls = [
 
 export const searchOptions = [
   {
-    label: "Search by type....",
+    label: "Type",
     name: "listingType",
     options: [
       { id: "rent", label: "Rent" },
@@ -357,7 +357,7 @@ export const searchOptions = [
     ],
   },
   {
-    label: "Property-Type",
+    label: "Property",
     name: "propertyType",
     options: [
       { id: "Apartment", label: "Apartment" },
@@ -368,7 +368,7 @@ export const searchOptions = [
     ],
   },
   {
-    label: "Furnished-Status",
+    label: "Furnished",
     name: "furnished",
     options: [
       { id: "Furnished", label: "Fully-Furnished" },

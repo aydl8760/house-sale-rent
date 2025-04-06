@@ -31,6 +31,7 @@ export default function Listings() {
   });
   const [sort, setSort] = useState("price-lowtohigh");
   const [searchResult, setSearchResult] = useState();
+  const [showMore, setShowMore] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -62,6 +63,11 @@ export default function Listings() {
         console.log(data);
         if (data?.payload?.success) {
           setSearchResult(data?.payload?.listings);
+          if (data?.payload?.listings.length > 8) {
+            setShowMore(true);
+          } else {
+            setShowMore(false);
+          }
         }
       });
     };
@@ -113,32 +119,51 @@ export default function Listings() {
     navigate(`?${urlParams.toString()}`);
   };
 
+  const handleShowMoreClick = () => {
+    const numberOfListings = searchResult.length;
+    const startIndex = numberOfListings;
+    const urlParams = new URLSearchParams(location.search);
+    urlParams.set("startIndex", startIndex);
+
+    const searchQuery = urlParams.toString();
+
+    dispatch(getFilteredLists(searchQuery)).then((data) => {
+      const listed = data?.payload?.listings; // correct here
+
+      if (listed.length < 9) {
+        setShowMore(false);
+      }
+
+      setSearchResult([...searchResult, ...listed]); // now works
+    });
+  };
   console.log(searchResult);
+  console.log(showMore);
 
   return (
     <main>
       <div className="flex flex-col relative">
-        <div className="bg-gray-900 h-80 flex justify-center items-center  ">
-          <form onSubmit={handleOnSubmit} className=" max-w-7xl mx-auto p-3">
-            <div className="flex gap-3 justify-center items-center w-full">
+        <div className="bg-gray-900 h-52 md:h-80 flex justify-center items-center mt-14 md:mt-0  ">
+          <form onSubmit={handleOnSubmit} className="max-w-7xl mx-auto p-3">
+            <div className="flex flex-wrap gap-3 justify-center items-center w-full">
               <Input
                 type="text"
                 name="searchTerm"
                 placeholder="Search by anything..."
-                className="bg-white rounded-xl p-6 w-60 focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:outline-none"
+                className="bg-white  md:w-40 rounded-xl p-5 sm:p-6 w-32 sm:w-52 lg:w-60 focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:outline-none"
                 value={filters.searchTerm}
                 onChange={handleInputChange}
               />
               {searchOptions.map((control) => (
                 <div key={control.name}>
                   <Select
-                    className="w-40 focus:outline-none"
+                    className="w-36 lg:w-40 focus:outline-none"
                     value={filters.selectValues[control.name] || ""} // controlled
                     onValueChange={(value) =>
                       handleSelectChange(control.name, value)
                     }
                   >
-                    <SelectTrigger className="w-40 bg-white rounded-xl p-6 focus:ring-2 focus:ring-green-500">
+                    <SelectTrigger className="w-36 lg:w-40 bg-white rounded-xl p-5 sm:p-6 focus:ring-2 focus:ring-green-500">
                       <SelectValue placeholder={control.label} />
                     </SelectTrigger>
                     <SelectContent className="max-h-40 overflow-y-auto">
@@ -154,22 +179,24 @@ export default function Listings() {
               <Input
                 type="number"
                 name="bedRooms"
-                placeholder="BedRoom"
-                className="bg-white  rounded-xl p-6 w-40 focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:outline-none "
+                placeholder="BedRooms"
+                className="bg-white rounded-xl p-5 sm:p-6 w-36 lg:w-40 focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:outline-none "
                 value={filters.bedRooms}
                 onChange={handleInputChange}
               />
 
-              <Button className="bg-green-500 text-gray-950 px-8 py-6 rounded">
+              <Button className="bg-green-500 hover:bg-white text-gray-950 px-8 py-5 sm:py-6  rounded text-base   ">
                 Search
               </Button>
             </div>
           </form>
         </div>
 
-        <div className="max-w-6xl mx-auto rounded-lg shadow-lg border flex flex-col gap-8 max-h-[90rem] overflow-y-auto absolute left-0 right-0  bottom-[-35px] bg-white ">
-          <div className="p-4 px-10 border-b flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-slate-900">All Lists</h2>
+        <div className="md:max-w-4xl lg:max-w-6xl mx-auto md:rounded-lg md:shadow-lg md:border flex flex-col gap-8 max-h-[90rem] overflow-y-auto absolute left-0 right-0 top-0 md:top-auto md:bottom-[-35px] bg-white ">
+          <div className="py-3 md:py-4 px-10 border-b flex items-center justify-between">
+            <h2 className="text-base md:text-lg font-semibold text-slate-900">
+              All Lists
+            </h2>
             <div className="flex items-center gap-3">
               <span className="text-muted-foreground">
                 {searchResult?.length} Lists
@@ -205,9 +232,16 @@ export default function Listings() {
           </div>
         </div>
       </div>
-      {isLoading && <p className="text-center text-2xl mt-25">Loading...</p>}
-      <div className="mt-[50px]">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4  ">
+      {isLoading && (
+        <p className="text-center text-2xl mt-20 md:mt-28">Loading...</p>
+      )}
+      {!isLoading && searchResult?.length === 0 && (
+        <p className="text-2xl text-gray-800 mt-28 text-center">
+          No listing found!
+        </p>
+      )}
+      <div className="lg:pt-20 px-14">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
           {!isLoading && searchResult && searchResult.length > 0
             ? searchResult.map((listItem) => (
                 <UserListItem listItem={listItem} key={listItem._id} />
@@ -215,6 +249,15 @@ export default function Listings() {
             : null}
         </div>
       </div>
+
+      {!isLoading && showMore && (
+        <Button
+          className="text-green-700 bg-white hover:bg-white shadow-none border-none text-lg text-center w-full hover:underline cursor-pointer p-7"
+          onClick={handleShowMoreClick}
+        >
+          Show more
+        </Button>
+      )}
     </main>
   );
 }

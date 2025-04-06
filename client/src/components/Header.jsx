@@ -44,13 +44,13 @@ export default function Header() {
   }
 
   return (
-    <header className={`${!isHomePage && "shadow-md"} `}>
+    <header className={`${!isHomePage && "shadow-md border-b"} `}>
       <div
         className={`max-w-7xl mx-auto p-2 flex items-center justify-between  ${
           isHomePage && "mt-6 px-4"
         }`}
       >
-        <h1 className="font-bold text-base sm:text-xl flex flex-wrap ">
+        <h1 className="font-bold text-lg sm:text-xl flex flex-wrap ">
           <span className="text-green-400">Adnann</span>
           <span className="text-gray-100">Estate</span>
         </h1>

@@ -31,16 +31,18 @@ export default function Search() {
         placeholder="Search ....."
         name="keyword"
         type="text"
-        className={`bg-transparent focus:outline-none w-52 p-2 ${
-          isHomePage ? "sm:w-[30rem]" : "sm:w-96"
+        className={`bg-transparent focus:outline-none w-80 px-2 py-2 ${
+          isHomePage ? "sm:w-[30rem] " : "sm:w-96"
         } `}
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
       <button
         className={`${
-          isHomePage ? "bg-green-500" : "bg-gray-100"
-        } p-3 h-[50px] rounded-r-lg w-14 flex items-center justify-center`}
+          isHomePage
+            ? "bg-green-500 hover:bg-green-600"
+            : "bg-gray-100 hover:bg-green-500"
+        } p-3 h-[50px] rounded-r-lg w-14 flex items-center justify-center hover:opacity-95`}
       >
         <FaSearch className="text-slate-700" />
       </button>

@@ -438,7 +438,7 @@ export default function UpdateList() {
                 }
                 className="bg-blue-600 w-[50%] uppercase text-white p-6 rounded-lg hover:bg-blue-700 disabled:opacity-85 "
               >
-                {isLoading ? "Updating..." : "Update Car"}
+                {isLoading ? "Updating..." : "Update List"}
               </Button>
             </div>
           </div>

@@ -252,10 +252,10 @@ export const getListings = async (req, res, next) => {
 
     switch (sortBy) {
       case "price-lowtohigh":
-        sort["commonInfo.price"] = 1;
+        sort["commonInfo.price"] = -1;
         break;
       case "price-hightolow":
-        sort["commonInfo.price"] = -1;
+        sort["commonInfo.price"] = 1;
         break;
       case "title-az":
         sort["commonInfo.title"] = 1;
