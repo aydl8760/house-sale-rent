@@ -72,6 +72,7 @@ export default function Header() {
               >
                 My List
               </Link>
+
               <div className="hidden lg:inline-flex">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -102,7 +103,7 @@ export default function Header() {
                       </DropdownMenuItem>
                     </Link>
                     <DropdownMenuSeparator />
-                    <Link>
+                    <Link to={"/listings/search"}>
                       <DropdownMenuItem>
                         <TagIcon className="mr-2 w-4 h-4" />
                         Sale

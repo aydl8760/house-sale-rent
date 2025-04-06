@@ -91,6 +91,16 @@ export const deleteList = createAsyncThunk(
   }
 );
 
+export const getFilteredLists = createAsyncThunk(
+  "/listing/getFilteredLists",
+  async (searchQuery) => {
+    const result = await axios.get(
+      `http://localhost:3050/api/listing/get?${searchQuery}`
+    );
+    return result?.data;
+  }
+);
+
 const listSlice = createSlice({
   name: "lists",
   initialState,
@@ -168,6 +178,18 @@ const listSlice = createSlice({
       })
       .addCase(deleteList.rejected, (state) => {
         (state.isLoading = false), (state.list = null);
+      })
+      .addCase(getFilteredLists.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getFilteredLists.fulfilled, (state, action) => {
+        console.log(action.payload);
+        state.isLoading = false;
+        state.searchResult = action.payload;
+      })
+      .addCase(getFilteredLists.rejected, (state, action) => {
+        state.isLoading = false;
+        state.list = [];
       });
   },
 });

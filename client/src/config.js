@@ -377,3 +377,10 @@ export const searchOptions = [
     ],
   },
 ];
+
+export const sortOptions = [
+  { id: "price-lowtohigh", label: "Price: Low - High" },
+  { id: "price-hightolow", label: "Price: High - Low" },
+  { id: "title-az", label: "Title: A to Z" },
+  { id: "title-za", label: "Title: Z to A" },
+];
