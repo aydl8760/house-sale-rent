@@ -6,6 +6,7 @@ const initialState = {
   isLoading: false,
   user: null,
   error: null,
+  successMessage: "",
 };
 
 export const signup = createAsyncThunk("/auth/signup", async (formData) => {
@@ -86,6 +87,38 @@ export const logout = createAsyncThunk("/auth/logout", async () => {
   );
   return response.data;
 });
+
+export const forgotPassword = createAsyncThunk(
+  "/auth/forgotPassword",
+  async (formData) => {
+    const response = await axios.post(
+      "http://localhost:3050/api/auth/forgot-password",
+      formData,
+      {
+        withCredentials: true,
+      }
+    );
+
+    return response.data;
+  }
+);
+
+export const newPassword = createAsyncThunk(
+  "/auth/newPassword",
+  async ({ formData, token }) => {
+    const result = await axios.post(
+      `http://localhost:3050/api/auth/reset-password/${token}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      }
+    );
+    return result?.data;
+  }
+);
 
 /* export const checkAuth = createAsyncThunk("/auth/checkAuth", async () => {
   const response = await axios.get("http://localhost:3050/api/auth/checkAuth", {
@@ -175,6 +208,29 @@ const authSlice = createSlice({
         state.user = null;
         state.isAuthenticated = false;
         console.log(state.user);
+      })
+      .addCase(forgotPassword.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(forgotPassword.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.successMessage = action.payload;
+      })
+      .addCase(forgotPassword.rejected, (state) => {
+        (state.isLoading = false), (state.error = action.payload);
+      })
+      .addCase(newPassword.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(newPassword.fulfilled, (state, action) => {
+        console.log(action.payload);
+
+        state.isLoading = false;
+        state.successMessage = action.payload;
+      })
+      .addCase(newPassword.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
       });
   },
 });

@@ -51,8 +51,12 @@ export default function Header() {
         }`}
       >
         <h1 className="font-bold text-lg sm:text-xl flex flex-wrap ">
-          <span className="text-green-400">Adnann</span>
-          <span className="text-gray-100">Estate</span>
+          <span className={`${isHomePage && "text-green-400"} text-green-600`}>
+            Adnann
+          </span>
+          <span className={`${isHomePage && "text-gray-100"} text-gray-800 `}>
+            Estate
+          </span>
         </h1>
 
         {!isHomePage && <Search />}

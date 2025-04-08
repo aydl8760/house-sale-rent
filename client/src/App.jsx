@@ -14,6 +14,9 @@ import PaymentSystem from "./pages/PaymentSystem";
 import UpdateList from "./pages/HouseList/UpdateList";
 import DetailsOfList from "./pages/HouseList/DetailsList";
 import Listings from "./pages/HouseList/Listings";
+import ForgotPassword from "./pages/Auth/ForgotPassword";
+import NewPassword from "./pages/Auth/NewPasswordSet";
+import GuestRoute from "./components/GuestRoute";
 
 function App() {
   const location = useLocation();
@@ -23,12 +26,44 @@ function App() {
       {!isHomePage && <Header />}
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<LogIn />} />
-        <Route path="/signup" element={<SignUp />} />
+        <Route
+          path="/login"
+          element={
+            <GuestRoute>
+              <LogIn />
+            </GuestRoute>
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            <GuestRoute>
+              <SignUp />
+            </GuestRoute>
+          }
+        />
+        <Route
+          path="/forgotPassword"
+          element={
+            <GuestRoute>
+              <ForgotPassword />
+            </GuestRoute>
+          }
+        />
+        <Route
+          path="/reset/:token"
+          element={
+            <GuestRoute>
+              <NewPassword />
+            </GuestRoute>
+          }
+        />
+
         <Route path="/about" element={<About />} />
         <Route path="/admin/order" element={<AdminOrders />} />
         <Route path="/details/:id" element={<DetailsOfList />} />
         <Route path="/listings/search" element={<Listings />} />
+
         <Route element={<AuthCheckRoutes />}>
           <Route path="/profile" element={<Profile />} />
           <Route path="/createList" element={<CreateList />} />

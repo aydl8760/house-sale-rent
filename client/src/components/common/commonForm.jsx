@@ -128,7 +128,7 @@ export default function CommonForm({
       >
         {buttonText || "Submit"}
       </Button>
-      <GoogleOAuth />
+      {showGoogleAuth && <GoogleOAuth />}
     </form>
   );
 }

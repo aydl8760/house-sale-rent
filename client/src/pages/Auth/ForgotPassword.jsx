@@ -4,31 +4,33 @@ import { useToast } from "@/hooks/use-toast";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "../../store/auth-slice.js";
-import { loginFormControls } from "@/config.js";
+import { forgotPassword, login } from "../../store/auth-slice.js";
+import { forgotPasswordFormControls } from "@/config.js";
 
 const initialState = {
   email: "",
-  password: "",
 };
 
-export default function LogIn() {
+export default function ForgotPassword() {
   const [formData, setFormData] = useState(initialState);
   const { isLoading } = useSelector((state) => state.auth);
+  const [sended, setSended] = useState(false);
+  const [message, setMessage] = useState("");
   const dispatch = useDispatch();
   const { toast } = useToast();
   const navigate = useNavigate();
 
   function onSubmit(event) {
     event.preventDefault();
-    dispatch(login(formData)).then((data) => {
+    dispatch(forgotPassword(formData)).then((data) => {
       console.log(data);
       if (data?.payload?.success) {
         toast({
           title: data?.payload?.message,
           className: "bg-green-500",
         });
-        navigate("/");
+        setSended(true);
+        setMessage(data?.payload?.message);
       } else {
         toast({
           title: data?.payload?.message,
@@ -43,26 +45,26 @@ export default function LogIn() {
   return (
     <div className="p-3 max-w-lg mx-auto">
       <h1 className="text-3xl text-center font-semibold mt-20 text-slate-800 ">
-        Create New Account
+        Forgot-Password
       </h1>
-      <CommonForm
-        formData={formData}
-        formControls={loginFormControls}
-        buttonText={isLoading ? "Loading..." : "Signin"}
-        onSubmit={onSubmit}
-        setFormData={setFormData}
-        disabled={isLoading}
-        showGoogleAuth={true}
-      />
-      <div className=" mt-5">
-        <Link to={"/forgotPassword"} className="hover:underline">
-          Forgot Password
-        </Link>
-      </div>
-      <div className="flex gap-2 mt-2">
-        <p>Don't Have an Account?</p>
-        <Link to="/signup">
-          <span className="text-blue-700 hover:underline">Signup</span>
+      {sended ? (
+        <p>{message}</p>
+      ) : (
+        <CommonForm
+          formData={formData}
+          formControls={forgotPasswordFormControls}
+          buttonText={isLoading ? "sending..." : "Send Reset link"}
+          onSubmit={onSubmit}
+          setFormData={setFormData}
+          disabled={isLoading}
+          showGoogleAuth={false}
+        />
+      )}
+      <div className="flex gap-2 mt-5">
+        <Link to={`${sended ? "/" : "/login"}`}>
+          <span className="text-blue-700 hover:underline">
+            {sended ? "Back to home" : "Back to Login"}
+          </span>
         </Link>
       </div>
     </div>

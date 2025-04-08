@@ -37,7 +37,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-4">
+      <div className="max-w-6xl mx-auto gap-14 grid grid-cols-4">
         {listings?.map((listItem) => (
           <UserListItem listItem={listItem} />
         ))}

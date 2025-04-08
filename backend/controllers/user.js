@@ -70,6 +70,7 @@ export const deleteUser = async (req, res, next) => {
 
   try {
     await User.findByIdAndDelete(id);
+    await List.deleteMany({ creator: id });
     res.clearCookie("token");
     res.status(200).json({
       success: true,

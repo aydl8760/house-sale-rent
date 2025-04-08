@@ -38,6 +38,8 @@ const userSchema = new mongoose.Schema(
       enum: ["free", "starter", "pro"],
       default: "free",
     },
+    resetToken: String,
+    resetTokenExpiration: Date,
     role: {
       type: String,
       default: "user",

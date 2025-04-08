@@ -13,7 +13,7 @@ export const headerMenuItems = [
   {
     id: "create",
     label: "Create",
-    path: "/createList",
+    path: "/paymentOption",
   },
 ];
 
@@ -55,6 +55,25 @@ export const loginFormControls = [
   {
     name: "password",
     label: "Password",
+    placeholder: "Enter your password",
+    componentType: "input",
+    type: "password",
+  },
+];
+
+export const forgotPasswordFormControls = [
+  {
+    name: "email",
+
+    type: "text",
+    componentType: "input",
+    placeholder: "Enter your email",
+  },
+];
+
+export const newPasswordFormControls = [
+  {
+    name: "password",
     placeholder: "Enter your password",
     componentType: "input",
     type: "password",

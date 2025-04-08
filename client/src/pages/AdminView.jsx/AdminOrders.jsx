@@ -49,6 +49,7 @@ const AdminOrders = () => {
         <thead>
           <tr>
             <th>Order ID</th>
+            <th>date</th>
             <th>Subscription Type</th>
             <th>Status</th>
             <th>Verify</th>
@@ -56,12 +57,13 @@ const AdminOrders = () => {
         </thead>
         <tbody>
           {orders.map((order) => (
-            <tr key={order._id}>
-              <td>{order._id}</td>
-              <td>{order.userId.subscriptionType}</td>
-              <td>{order.status}</td>
+            <tr key={order?._id}>
+              <td>{order?._id}</td>
+              <td>{order?.createdAt}</td>
+              <td>{order?.userId?.subscriptionType}</td>
+              <td>{order?.status}</td>
               <td>
-                {order.status === "pending" ? (
+                {order?.status === "pending" ? (
                   <button onClick={() => verifyOrder(order._id)}>Verify</button>
                 ) : (
                   "Verified"
