@@ -35,11 +35,8 @@ export const adminVerifyOrder = async (req, res) => {
 
 export const adminOrders = async (req, res) => {
   try {
-    const orders = await Order.find().populate(
-      "userId",
-      "userName email subscriptionType verified postLimit"
-    );
-    const user = await User.findById(orders.userId);
+    const orders = await Order.find({ paymentMethod: { $ne: "free" } }) // not equal to 'free'
+      .populate("userId", "userName email subscriptionType verified postLimit");
 
     res.status(200).json(orders);
   } catch (error) {

@@ -7,8 +7,8 @@ export const createOrder = async (req, res, next) => {
   try {
     const plans = {
       free: { amount: 0, postLimit: 1 },
-      starter: { amount: 25, postLimit: 10 },
-      pro: { amount: 45, postLimit: 25 },
+      starter: { amount: 25, postLimit: 2 },
+      pro: { amount: 45, postLimit: 3 },
     };
 
     if (!plans[paymentMethod]) {

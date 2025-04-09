@@ -28,7 +28,11 @@ export default function LogIn() {
           title: data?.payload?.message,
           className: "bg-green-500",
         });
-        navigate("/");
+        if (data?.payload?.user?.role === "admin") {
+          navigate("/admin");
+        } else {
+          navigate("/");
+        }
       } else {
         toast({
           title: data?.payload?.message,

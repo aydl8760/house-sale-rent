@@ -30,8 +30,8 @@ export default function UserListItem({ listItem, handleDelteUserList }) {
             src={listItem?.imageUrls[0]}
             alt=""
             className={`w-full ${
-              isUserListsPage && "h-[300px]"
-            } "h-[220px]"   sm:h-[220px] lg:object-cover rounded-t-lg transition-transform duration-300 hover:scale-110 `}
+              isUserListsHomePage ? "h-[200px]" : "h-[300px]"
+            } "h-[220px]" sm:h-[220px] lg:object-cover rounded-t-lg transition-transform duration-300 hover:scale-110 `}
           />
         </div>
         <CardContent className="font-medium text-gray-800 flex flex-col gap-2  rounded-b-lg ">

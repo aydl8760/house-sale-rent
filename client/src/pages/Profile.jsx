@@ -222,7 +222,7 @@ export default function Profile() {
           {isLoading ? "Loading..." : "Update Profile"}
         </Button>
       </form>
-      <Link to={"/paymentOption"}>Create Listing</Link>
+
       <div className="flex flex-col mt-4 border  w-[50%] p-3 gap-2">
         <p
           onClick={handleLogoutUser}

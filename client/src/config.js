@@ -146,7 +146,7 @@ export const commonFeaturesFormControls = [
     name: "parking",
     componentType: "select",
     options: [
-      { id: "No-Parking", label: "No-Parking" },
+      { id: "No", label: "No-Parking" },
       { id: "1-car", label: "1-car" },
       { id: "2-car", label: "2-car" },
       { id: "3+car", label: "3+car" },

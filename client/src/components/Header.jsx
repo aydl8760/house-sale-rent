@@ -5,7 +5,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 /* import heroimg from "../assets/houseimg.jpeg";
 import heroimg2 from "../assets/houseimg.jpeg"; */
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,13 +15,25 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "./ui/avatar";
-import { LogOut, TagIcon, UserPen } from "lucide-react";
+import { LogOut, Menu, TagIcon, UserPen } from "lucide-react";
 import Search from "./Search";
+import { logout } from "../store/auth-slice";
+import { useToast } from "@/hooks/use-toast";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "./ui/sheet";
 
 export default function Header() {
+  const [open, setOpen] = useState(false);
   const { isAuthenticated, user } = useSelector((state) => state.auth);
   const location = useLocation();
   const isHomePage = location.pathname === "/";
+  const dispatch = useDispatch();
+  const { toast } = useToast();
 
   console.log(user);
 
@@ -29,7 +41,13 @@ export default function Header() {
     return (
       <ul className="gap-5 lg:flex ">
         {headerMenuItems.map((menuItem) => (
-          <Link to={menuItem.path} key={menuItem.id}>
+          <Link
+            to={menuItem.path}
+            key={menuItem.id}
+            onClick={() => {
+              setOpen ? setOpen(false) : null;
+            }}
+          >
             <li
               className={`${
                 isHomePage ? "text-white" : "text-gray-900"
@@ -42,6 +60,22 @@ export default function Header() {
       </ul>
     );
   }
+
+  const handleLogoutUser = () => {
+    dispatch(logout()).then((data) => {
+      if (data?.payload?.success) {
+        toast({
+          title: data?.payload?.message,
+          className: "bg-green-500",
+        });
+      } else {
+        toast({
+          title: data?.payload?.message,
+          variant: "destructive",
+        });
+      }
+    });
+  };
 
   return (
     <header className={`${!isHomePage && "shadow-md border-b"} `}>
@@ -121,7 +155,7 @@ export default function Header() {
                     </Link>
                     <DropdownMenuSeparator />
                     <Link to="/">
-                      <DropdownMenuItem>
+                      <DropdownMenuItem onClick={handleLogoutUser}>
                         <LogOut className="mr-2 w-4 h-4" />
                         Logout
                       </DropdownMenuItem>
@@ -131,13 +165,56 @@ export default function Header() {
               </div>
             </>
           ) : (
-            <Link to="/signup" className="">
+            <Link to="/signup" className="hidden lg:inline-flex">
               <Button className="bg-green-600 text-white rounded-md hover:bg-green-500">
                 Sign up
               </Button>
             </Link>
           )}
         </div>
+        <Sheet open={open} onOpenChange={setOpen}>
+          <SheetTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="lg:hidden hover:bg-transparent p-3 text-2xl" // Increased padding and text size
+            >
+              <Menu
+                className="text-white"
+                style={{ height: "28px", width: "28px" }}
+              />
+
+              <span className="sr-only">Toggle header menu</span>
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="right" className="w-full max-w-xs p-8 space-y-5">
+            <SheetHeader className="mb-5 mt-5">
+              <SheetTitle>Menu</SheetTitle>
+            </SheetHeader>
+            <MenuItem />
+
+            {isAuthenticated ? (
+              <div className="flex flex-col">
+                <Link to="/profile">My Account</Link>
+                <Link
+                  to={`userCars/${user?._id}`}
+                  className="text-slate-800 hover:text-blue-700 hover:underline"
+                >
+                  My Cars
+                </Link>
+                <Link to="/" onClick={handleLogoutUser}>
+                  Logout
+                </Link>
+              </div>
+            ) : (
+              <Link to="/signup">
+                <Button className="bg-blue-600 text-white rounded-md hover:bg-blue-800">
+                  Sign up
+                </Button>
+              </Link>
+            )}
+          </SheetContent>
+        </Sheet>
       </div>
     </header>
   );

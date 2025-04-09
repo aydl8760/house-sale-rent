@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { adminOrder, adminVerifyOrder } from "../store/admin-slice";
+import { adminOrder, adminVerifyOrder } from "../../store/admin-slice";
 
 const AdminOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -61,6 +61,7 @@ const AdminOrders = () => {
               <td>{order?._id}</td>
               <td>{order?.createdAt}</td>
               <td>{order?.userId?.subscriptionType}</td>
+              <td>{order?.userId?.email}</td>
               <td>{order?.status}</td>
               <td>
                 {order?.status === "pending" ? (

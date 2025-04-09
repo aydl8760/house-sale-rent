@@ -20,6 +20,8 @@ import { useNavigate } from "react-router-dom";
 import { createList } from "../../store/listing-slice";
 import { useToast } from "@/hooks/use-toast";
 import { useDispatch, useSelector } from "react-redux";
+import { Label } from "@/components/ui/label";
+import { UploadCloudIcon } from "lucide-react";
 
 export default function CreateList() {
   const { isAuthenticated, user, isLoading } = useSelector(
@@ -387,6 +389,7 @@ export default function CreateList() {
                   multiple
                   onChange={handleImageFiles}
                 />
+
                 <Button
                   onClick={uploadImagesToCloudinary}
                   type="button"
@@ -419,7 +422,7 @@ export default function CreateList() {
                   </div>
                 ))}
             </div>
-            <div className="w-full flex justify-center items-center">
+            <div className="w-full mt-10 flex justify-center items-center">
               <Button
                 disabled={
                   isLoading || loading || formData.imageUrls.length === 0
