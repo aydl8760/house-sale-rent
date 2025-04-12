@@ -276,6 +276,8 @@ export default function DetailsOfList() {
         </div>
         {list?.creator !== user?._id && <Contact list={list} />}
       </div>
+
+      <div></div>
     </main>
   );
 }

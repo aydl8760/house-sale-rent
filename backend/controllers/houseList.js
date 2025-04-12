@@ -99,7 +99,7 @@ export const createList = async (req, res, next) => {
 
 export const getAllLists = async (req, res, next) => {
   try {
-    const getAllList = await List.find({});
+    const getAllList = await List.find({ active: true });
     res.status(200).json({
       success: true,
       getAllList,

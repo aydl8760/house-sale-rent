@@ -332,16 +332,7 @@ export const rentFeaturesFormControls = [
       { id: "broker", label: "Broker" },
     ],
   },
-  {
-    label: "Pricetype",
-    name: "priceType",
-    type: "number",
-    componentType: "select",
-    options: [
-      { id: "FixedPrice", label: "Fixed-Price" },
-      { id: "Negotiable", label: "Negotiable" },
-    ],
-  },
+
   {
     label: "Time To Contact",
     name: "timeToContact",

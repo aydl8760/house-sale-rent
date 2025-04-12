@@ -120,7 +120,7 @@ export const newPassword = createAsyncThunk(
   }
 );
 
-/* export const checkAuth = createAsyncThunk("/auth/checkAuth", async () => {
+export const checkAuth = createAsyncThunk("/auth/checkAuth", async () => {
   const response = await axios.get("http://localhost:3050/api/auth/checkAuth", {
     headers: {
       "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
@@ -129,7 +129,7 @@ export const newPassword = createAsyncThunk(
   });
 
   return response.data;
-}); */
+});
 
 const authSlice = createSlice({
   name: "auth",
@@ -231,6 +231,20 @@ const authSlice = createSlice({
       .addCase(newPassword.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+      })
+      .addCase(checkAuth.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(checkAuth.fulfilled, (state, action) => {
+        console.log("action", action.payload);
+        state.isLoading = false;
+        state.user = action.payload.success ? action.payload.user : null;
+        state.isAuthenticated = action.payload.success;
+      })
+      .addCase(checkAuth.rejected, (state, action) => {
+        state.isLoading = false;
+        state.user = null;
+        state.isAuthenticated = false;
       });
   },
 });
