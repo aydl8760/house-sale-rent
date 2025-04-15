@@ -52,10 +52,10 @@ export default function LogIn() {
       <CommonForm
         formData={formData}
         formControls={loginFormControls}
-        buttonText={isLoading ? "Loading..." : "Signin"}
+        //buttonText={isLoading ? "Loading..." : "Signin"}
         onSubmit={onSubmit}
         setFormData={setFormData}
-        disabled={isLoading}
+        //disabled={isLoading}
         showGoogleAuth={true}
       />
       <div className=" mt-5">

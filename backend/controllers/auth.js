@@ -5,6 +5,7 @@ import User from "../models/user.js";
 import nodemailer from "nodemailer";
 import sendgridTransport from "nodemailer-sendgrid-transport";
 import dotenv from "dotenv";
+import { validationResult } from "express-validator";
 
 dotenv.config();
 
@@ -17,6 +18,16 @@ const transporter = nodemailer.createTransport(
 );
 
 export const signup = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    // This will return all the validation errors
+    return res.json({
+      success: false,
+      //message: "Validation failed",
+      errorMessage: errors.array()[0].msg,
+    });
+  }
+
   const { userName, email, password } = req.body;
 
   try {

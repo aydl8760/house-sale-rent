@@ -240,8 +240,8 @@ export default function Listings() {
           No listing found!
         </p>
       )}
-      <div className="lg:pt-20 px-3">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+      <div className="pt-8 lg:pt-20 sm:max-w-6xl mx-auto  ">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 place-items-center">
           {!isLoading && searchResult && searchResult.length > 0
             ? searchResult.map((listItem) => (
                 <UserListItem listItem={listItem} key={listItem._id} />

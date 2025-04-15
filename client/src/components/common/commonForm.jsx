@@ -95,7 +95,7 @@ export default function CommonForm({
             placeholder={getItem.placeholder}
             type={getItem.type}
             id={getItem.name}
-            className="  "
+            required
             value={value}
             onChange={(event) =>
               setFormData({

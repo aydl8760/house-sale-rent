@@ -101,6 +101,16 @@ export const getFilteredLists = createAsyncThunk(
   }
 );
 
+export const incrementViewCount = createAsyncThunk(
+  "/car/getViewedCars",
+  async (id) => {
+    const response = await axios.put(
+      `http://localhost:3050/api/listing/${id}/view`
+    );
+    return response.data;
+  }
+);
+
 const listSlice = createSlice({
   name: "lists",
   initialState,
@@ -190,6 +200,12 @@ const listSlice = createSlice({
       .addCase(getFilteredLists.rejected, (state, action) => {
         state.isLoading = false;
         state.list = [];
+      })
+      .addCase(incrementViewCount.fulfilled, (state, action) => {
+        console.log(action);
+        state.isLoading = false;
+        state.list = action;
+        state.error = false;
       });
   },
 });

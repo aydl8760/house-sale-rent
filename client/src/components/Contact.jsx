@@ -54,8 +54,8 @@ export default function Contact({ list }) {
     fetchLandLord();
   }, [list?.creator]);
   return (
-    <div className="max-w-5xl w-full mt-5 mx-auto p-3 flex gap-7">
-      <div className="w-[50%] flex flex-col gap-7">
+    <div className="max-w-5xl w-full mt-5 mx-auto p-3 flex flex-col md:flex-row gap-7">
+      <div className="w-full md:w-[50%] flex flex-col gap-7">
         <div className="flex items-center gap-2">
           <p className="whitespace-nowrap">
             Contact Us on{" "}
@@ -89,7 +89,7 @@ export default function Contact({ list }) {
           </div>
         </div>
       </div>
-      <div className="w-[50%] shadow-lg p-5">
+      <div className="w-full md:w-[50%] shadow-lg p-5">
         {landLord && (
           <form className="w-full flex flex-col gap-4" onSubmit={onSubmit}>
             <div>

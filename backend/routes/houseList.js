@@ -8,6 +8,7 @@ import {
   handleMultipleImageUpload,
   updateListById,
   getListings,
+  incrementViewCount,
 } from "../controllers/houseList.js";
 import { authMiddleWare } from "../helpers/verifyUser.js";
 import { upload } from "../helpers/cloudinary.js";
@@ -26,5 +27,6 @@ router.get("/get-List/:id", getListById);
 router.put("/update/:id", authMiddleWare, updateListById);
 router.delete("/delete/:id", authMiddleWare, deleteListById);
 router.get("/get", getListings);
+router.put("/:id/view", incrementViewCount);
 
 export default router;

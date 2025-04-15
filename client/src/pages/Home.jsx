@@ -60,8 +60,8 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className=" p-5 lg:p-3 ">
-        <div className="max-w-6xl sm:mx-auto flex flex-col gap-8  ">
+      <div className=" ">
+        <div className="max-w-6xl sm:mx-auto flex flex-col gap-8 mt-10  ">
           {rentListings && rentListings.length > 0 && (
             <div className="flex flex-col gap-2">
               <div className="lg:px-4  lg:mb-0  flex flex-col gap-2.5">
@@ -78,7 +78,7 @@ export default function Home() {
               {isLoading && <p className="text-2xl text-center">Loading...</p>}
 
               {!isLoading && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:p-4 place-items-center">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8  ">
                   {rentListings.map((listItem) => (
                     <UserListItem listItem={listItem} key={listItem._id} />
                   ))}
@@ -88,7 +88,7 @@ export default function Home() {
           )}
         </div>
       </div>
-      <div className="bg-white p-5  ">
+      <div className=" ">
         <div className="max-w-6xl sm:mx-auto flex flex-col gap-52 mt-8 ">
           {saleListings && saleListings.length > 0 && (
             <div className="flex flex-col gap-2">
@@ -106,7 +106,7 @@ export default function Home() {
               {isLoading && <p className="text-2xl text-center">Loading...</p>}
 
               {!isLoading && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:p-4 ">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8  ">
                   {saleListings.map((listItem) => (
                     <UserListItem listItem={listItem} key={listItem._id} />
                   ))}

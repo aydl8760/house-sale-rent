@@ -1,4 +1,5 @@
 import express from "express";
+import { check } from "express-validator";
 import {
   forgotPassword,
   googleAuth,
@@ -11,7 +12,17 @@ import { authMiddleWare } from "../helpers/verifyUser.js";
 
 const router = express.Router();
 
-router.post("/signup", signup);
+router.post(
+  "/signup",
+  [
+    check("userName").notEmpty().withMessage("Username is required"),
+    check("email").isEmail().withMessage("Invalid email"),
+    check("password")
+      .isLength({ min: 6 })
+      .withMessage("Password must be at least 6 characters"),
+  ],
+  signup
+);
 router.post("/login", login);
 router.post("/googleAuth", googleAuth);
 router.post("/logout", logout);

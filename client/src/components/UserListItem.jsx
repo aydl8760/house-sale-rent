@@ -23,7 +23,7 @@ export default function UserListItem({ listItem, handleDelteUserList }) {
   console.log(listItem?.active);
 
   return (
-    <Card className={`w-full sm:w-[270px] ${!isUserListsPage && "h-[370px]"}`}>
+    <Card className={`w-full sm:w-[280px] ${!isUserListsPage && "h-[370px]"}`}>
       <div
         onClick={() => navigate(`/details/${listItem._id}`)}
         className="hover:cursor-pointer "

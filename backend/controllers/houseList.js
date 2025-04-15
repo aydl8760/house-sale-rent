@@ -281,3 +281,24 @@ export const getListings = async (req, res, next) => {
     next(error);
   }
 };
+
+export const incrementViewCount = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const listView = await List.findByIdAndUpdate(
+      id,
+      { $inc: { viewCount: 1 } },
+      { new: true }
+    );
+
+    if (!listView) {
+      return res
+        .status(404)
+        .json({ success: false, message: "List not found" });
+    }
+
+    res.status(200).json({ success: true, listView });
+  } catch (error) {
+    next(error);
+  }
+};

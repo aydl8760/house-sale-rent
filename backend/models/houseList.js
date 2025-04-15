@@ -27,6 +27,10 @@ const ListSchema = new Schema(
     imageUrls: { type: Array, required: true },
     creator: { type: String, required: true },
     active: { type: Boolean, default: false },
+    viewCount: {
+      type: Number,
+      default: 0, // Start with 0 views
+    },
   },
   { timestamps: true }
 );
